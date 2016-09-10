@@ -1,21 +1,3 @@
-var CounterModel = function() {
-  this.count = 0;
-  this.callback;
-}
-
-CounterModel.prototype.update = function() {
-  this.count++;
-  this.notifyChange();
-};
-
-CounterModel.prototype.notifyChange = function() {
-  this.callback(this.count);
-};
-
-CounterModel.prototype.onChange = function(callback) {
-  this.callback = callback;
-};
-
 var ClickerView = function() {
   this.clicker = document.getElementById('clicker');
 };
@@ -32,14 +14,36 @@ CounterView.prototype.show = function(count) {
   this.counter.innerHTML = count;
 };
 
-clickerView = new ClickerView();
-counterModel = new CounterModel();
-counterView = new CounterView();
+var Server = function() {
+  this.socket = new WebSocket('ws://localhost:8000');
+  this.fileReader = new FileReader();
+  var self = this;
+  this.fileReader.onload = function(evt) {
+    var text = evt.target.result;
+    self.callback(parseInt(text));
+  };
+  this.socket.onmessage = function(evt) {
+    self.fileReader.readAsText(evt.data);
+  }
+};
 
-clickerView.onClick(function() {
-  counterModel.update();
+Server.prototype.update = function() {
+  this.socket.send('update');
+};
+
+Server.prototype.onUpdate = function(callback) {
+  this.callback = callback
+};
+
+
+var clickerView = new ClickerView();
+var counterView = new CounterView();
+var server = new Server();
+
+server.onUpdate(function(count) {
+  counterView.show(count);
 });
 
-counterModel.onChange(function(count) {
-  counterView.show(count);
+clickerView.onClick(function() {
+  server.update();
 });
