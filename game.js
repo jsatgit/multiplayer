@@ -15,20 +15,20 @@ CounterView.prototype.show = function(count) {
 };
 
 var Server = function() {
-  this.socket = new WebSocket('ws://localhost:8000');
-  this.fileReader = new FileReader();
+  var domain = 'localhost';
+  var port = '5000';
+  this.socket = io.connect('http://' + domain + ':' + port);
+  this.socket.on('connect', function() {
+    console.log('Connected to server');
+  });
   var self = this;
-  this.fileReader.onload = function(evt) {
-    var text = evt.target.result;
-    self.callback(parseInt(text));
-  };
-  this.socket.onmessage = function(evt) {
-    self.fileReader.readAsText(evt.data);
-  }
-};
+  this.socket.on('count', function(count) {
+    self.callback(count);
+  });
+}
 
 Server.prototype.update = function() {
-  this.socket.send('update');
+  this.socket.emit('update');
 };
 
 Server.prototype.onUpdate = function(callback) {

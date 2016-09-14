@@ -16,10 +16,11 @@ class CounterServer(WebSocket):
             client.sendMessage(str(Counter.count))
 
     def handleConnected(self):
+        print self.address
         clients.append(self)
 
     def handleClose(self):
         clients.remove(self)
 
-server = SimpleWebSocketServer('', 8000, CounterServer)
+server = SimpleWebSocketServer('25.13.225.77', 8000, CounterServer)
 server.serveforever()
