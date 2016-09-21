@@ -1,3 +1,13 @@
+import loadGoogleMapsAPI from 'load-google-maps-api';
+ 
+loadGoogleMapsAPI({
+  key: 'AIzaSyB31n3sHV4rZCA8MtIx3_mRBoxznPUYYGY'
+}).then((googleMaps) => {
+  initMap();
+}).catch((err) => {
+  console.error(err);
+});
+
 var map;
 var socket;
 var coquitlam = {lat: 49.2838, lng: -122.7932};
@@ -104,7 +114,7 @@ function addHouse(latlong) {
 }
 
 function addMarker(latlong, icon) {
-  return marker = new google.maps.Marker({
+  return new google.maps.Marker({
     position: latlong,
     map: map,
     title: 'Hello World!',

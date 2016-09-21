@@ -1,31 +1,19 @@
-var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-
 module.exports = {
-  entry: "./game.js",
+  entry: './javascript/main.js',
   output: {
-    path: __dirname,
-    filename: "public/bundle.js"
+    path: 'public',
+    filename: './bundle.js'
   },
   module: {
     loaders: [
-    { test: /\.css$/, loader: "style!css" }
-    ]
-  },
-  loaders: [
-  {
-    test: /\.js$/,
-    exclude: /(node_modules|bower_components)/,
-    loader: 'babel', // 'babel-loader' is also a legal name to reference
-    query: {
-      presets: ['es2015']
+    {
+      test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
+      loader: 'babel', // 'babel-loader' is also a valid name to reference
+      query: {
+        presets: ['es2015']
+      }
     }
+    ]
   }
-  ],
-  plugins: [
-    new BrowserSyncPlugin({
-      host: 'localhost',
-      port: 3000,
-      server: { baseDir: ['public'] }
-    })
-  ]
 };
