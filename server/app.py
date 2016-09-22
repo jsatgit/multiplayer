@@ -1,45 +1,28 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, send, emit
-from time import sleep
-from threading import Thread
+from flask import Flask
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-def send(lat, lng):
-    print 'sending'
-    emit('marker', {'lat': lat, 'lng': lng}, broadcast=True, include_self=False)
-    sleep(5)
-
-class Game:
-    def __init__(self):
-        self.ready = False
-
-    def start(self):
-        send(3, 10)
-        send(43, 20)
-        send(-33, -110)
-
-    def ready(self):
-        self.ready = True
-
-game = Game()
-
 def sendToEveryone(event, data):
+    print 'emiting event: {event} and data: {data}'.format(
+        event=event,
+        data=data
+    )
     emit(event, data, broadcast=True, include_self=False)
 
-@socketio.on('addMarker')
-def on_addMarker(event):
-    print event['type']
-    print event['latlong']
-    sendToEveryone('markerReceived', event);
+@socketio.on('addPerson')
+def on_add_person(data):
+    sendToEveryone('addPerson', data);
+
+@socketio.on('addHouse')
+def on_add_house(data):
+    sendToEveryone('addHouse', data);
 
 @socketio.on('setPosition')
-def on_setPosition(event):
-    print event['person']
-    print event['loc']
-    sendToEveryone('positionSetReceived', event);
+def on_set_position(data):
+    sendToEveryone('setPosition', data);
 
 if __name__ == '__main__':
     socketio.run(app)
