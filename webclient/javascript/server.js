@@ -9,6 +9,7 @@ class Server {
   static get SET_POSITION() { return 'setPosition'; }
   static get ADD_PERSON() { return 'addPerson'; }
   static get ADD_HOUSE() { return 'addHouse'; }
+  static get REQUEST_STATE() { return 'requestState'; }
 
   connect() {
     return new Promise((resolve, reject) => {
@@ -25,28 +26,27 @@ class Server {
     for (let evt in this.bindings) {
       this.bindings[evt] = this.bindings[evt].bind(context);
       this.socket.on(evt, response => {
-        console.log(evt);
-        this.bindings[evt](response.position);
+        this.bindings[evt](response);
       });
     }
   }
 
-  addPerson(position) {
-    this.socket.emit(Server.ADD_PERSON, {
-      position: position
-    });
-  }
-
-  addHouse(position) {
+  addHouse(personId, position) {
     this.socket.emit(Server.ADD_HOUSE, {
+      personId: personId,
       position: position
     });
   }
 
-  setPosition(position) {
+  setPosition(personId, position) {
     this.socket.emit(Server.SET_POSITION, {
+      personId: personId,
       position: position
     });
+  }
+
+  requestState() {
+    this.socket.emit(Server.REQUEST_STATE);
   }
 }
 

@@ -13,7 +13,6 @@ class Keys {
 
   registerBindingWithKeyPress() {
     document.addEventListener('keypress', evt => {
-      console.log(evt.which);
       this.bindings[evt.which]();
     });
   }
