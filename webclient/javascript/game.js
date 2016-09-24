@@ -61,7 +61,8 @@ class Game {
       [Server.SET_POSITION]:  this.onSetPersonPosition,
       [Server.ADD_PERSON]:    this.onAddPerson,
       [Server.ADD_HOUSE]:     this.onAddHouse,
-      [Server.REQUEST_STATE]: this.loadState
+      [Server.REQUEST_STATE]: this.loadState,
+      [Server.REMOVE_PERSON]: this.onRemovePerson
     }, this);
   }
 
@@ -85,6 +86,10 @@ class Game {
     map.load(response.apiKey, response.myself.position).then(() => {
       this.renderState(response.state);
     });
+  }
+
+  onRemovePerson(person) {
+    this.statefulView.removePerson(person)
   }
 
   renderState(people) {

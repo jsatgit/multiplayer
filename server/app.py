@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_socketio import SocketIO, emit
 from game_state import GameState
 
@@ -21,9 +21,18 @@ def send_back(event, data):
     )
     emit(event, data)
 
+sid_to_person_map = {}
+
+def register_person(socket_id, person):
+    sid_to_person_map[socket_id] = person;
+
+def get_registered_person(socket_id):
+    return sid_to_person_map.get(socket_id)
+
 add_house = 'addHouse'
 set_position = 'setPosition'
 request_state = 'requestState'
+disconnect = 'disconnect'
 
 @socketio.on(add_house)
 def on_add_house(data):
@@ -38,12 +47,18 @@ def on_set_position(data):
 @socketio.on(request_state)
 def on_request_state():
     person = game.create_person()
+    register_person(request.sid, person)
     send_back(request_state, {
         'myself': person,
         'state': game.state,
         'apiKey': app.config.get('GOOGLE_MAPS_API_KEY')
     })
     send_to_everyone_else('addPerson', person);
+
+@socketio.on(disconnect)
+def on_user_disconnect():
+    person = get_registered_person(request.sid)
+    send_to_everyone_else('removePerson', person);
 
 if __name__ == '__main__':
     socketio.run(app)

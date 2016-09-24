@@ -19,7 +19,11 @@ class StatefulView {
   }
 
   updatePersonPosition(personId, position) {
-    this.peopleMarkers[personId].setPosition(position);
+    this.view.setPosition(this.peopleMarkers[personId], position);
+  }
+
+  removePerson(person) {
+    this.view.removeMarker(this.peopleMarkers[person.id])
   }
 }
 

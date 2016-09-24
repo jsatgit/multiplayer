@@ -18,6 +18,14 @@ class View {
   addHouse(position) {
     return this.map.addMarker(position, HOUSE_ICON);
   }
+
+  removeMarker(marker) {
+    marker.setMap(null);
+  }
+
+  setPosition(marker, position) {
+    marker.setPosition(position);
+  }
 }
 
 export default View;

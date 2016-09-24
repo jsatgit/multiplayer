@@ -10,6 +10,7 @@ class Server {
   static get ADD_PERSON() { return 'addPerson'; }
   static get ADD_HOUSE() { return 'addHouse'; }
   static get REQUEST_STATE() { return 'requestState'; }
+  static get REMOVE_PERSON() { return 'removePerson'; }
 
   connect() {
     return new Promise((resolve, reject) => {
