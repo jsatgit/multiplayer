@@ -2,10 +2,12 @@ import loadGoogleMapsAPI from 'load-google-maps-api';
 
 const COQUITLAM = {lat: 49.2838, lng: -122.7932};
 
+/**
+ * Interface with google maps api
+ */
 class Map {
   constructor(map, server) {
     this.googleMaps = null;
-    this.currentPosition = COQUITLAM;
   }
 
   addMarker(position, icon) {
@@ -16,14 +18,17 @@ class Map {
     });
   }
 
-
   load() {
     return new Promise((resolve, reject) => {
       loadGoogleMapsAPI({
         key: 'AIzaSyB31n3sHV4rZCA8MtIx3_mRBoxznPUYYGY'
       }).then(maps => {
         this.googleMaps = new google.maps.Map(document.getElementById('map'), {
-          center: this.currentPosition,
+          /*
+           * TODO center data should be gotten from the server
+           * load maps after connecting to server
+           */
+          center: COQUITLAM,
           zoom: 18 
         });
         resolve();
