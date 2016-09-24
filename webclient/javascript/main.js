@@ -1,3 +1,5 @@
+require("../css/main.css");
+
 import 'babel-polyfill';
 import Server from './server.js';
 import Game from './game.js';

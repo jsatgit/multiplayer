@@ -1,7 +1,5 @@
 import loadGoogleMapsAPI from 'load-google-maps-api';
 
-const COQUITLAM = {lat: 49.2838, lng: -122.7932};
-
 /**
  * Interface with google maps api
  */
