@@ -1,13 +1,11 @@
-import View from './view';
-
 /*
  * has a notion of state
  * keeps track of the markers
  * and who they belong to
  */
 class StatefulView {
-  constructor(map) {
-    this.view = new View(map);
+  constructor(view) {
+    this.view = view;
     this.peopleMarkers = {};
   }
 

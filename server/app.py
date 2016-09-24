@@ -3,7 +3,7 @@ from flask_socketio import SocketIO, emit
 from game_state import GameState
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
+app.config.from_object('config')
 socketio = SocketIO(app)
 game = GameState()
 
@@ -40,7 +40,8 @@ def on_request_state():
     person = game.create_person()
     send_back(request_state, {
         'myself': person,
-        'state': game.state
+        'state': game.state,
+        'apiKey': app.config.get('GOOGLE_MAPS_API_KEY')
     })
     send_to_everyone_else('addPerson', person);
 

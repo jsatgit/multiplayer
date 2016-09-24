@@ -3,15 +3,17 @@ import Server from './server';
 import StatefulView from './statefulView';
 import GameState from './gameState';
 import Stepper from './stepper';
+import View from './view';
+import Map from './map';
 
 /*
  * The game is the central object that communicates
  * between the view, server, and local gamestate
  */
 class Game {
-  constructor(map, server) {
-    this.statefulView = new StatefulView(map);
+  constructor(server) {
     this.server = server;
+    this.statefulView = null;
     this.gameState = null;
   }
 
@@ -77,7 +79,12 @@ class Game {
 
   loadState(response) {
     this.gameState = new GameState(response.myself);
-    this.renderState(response.state);
+    const map = new Map();
+    const view = new View(map);
+    this.statefulView = new StatefulView(view)
+    map.load(response.apiKey, response.myself.position).then(() => {
+      this.renderState(response.state);
+    });
   }
 
   renderState(people) {
