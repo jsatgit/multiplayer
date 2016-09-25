@@ -45,8 +45,8 @@ def on_set_position(data):
     send_to_everyone_else(set_position, data);
 
 @socketio.on(request_state)
-def on_request_state():
-    person = game.create_person()
+def on_request_state(person_details):
+    person = game.create_person(person_details)
     register_person(request.sid, person)
     send_back(request_state, {
         'myself': person,

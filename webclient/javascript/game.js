@@ -101,10 +101,14 @@ class Game {
     })
   }
 
-  load() {
+  load(formResult) {
     this.loadKeysBindings();
     this.loadServerBindings();
-    this.server.requestState();
+    this.server.requestState(formResult);
+  }
+
+  show() {
+    document.getElementById('map').style.display = 'block';
   }
 }
 

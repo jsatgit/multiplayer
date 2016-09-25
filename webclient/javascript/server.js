@@ -46,8 +46,8 @@ class Server {
     });
   }
 
-  requestState() {
-    this.socket.emit(Server.REQUEST_STATE);
+  requestState(formResult) {
+    this.socket.emit(Server.REQUEST_STATE, formResult);
   }
 }
 
