@@ -8,12 +8,32 @@ class Map {
     this.googleMaps = null;
   }
 
-  addMarker(position, icon) {
-    return new google.maps.Marker({
+  createInfoWindow(title) {
+    return new google.maps.InfoWindow({
+      content: title 
+    });
+  }
+
+  addTitleToMarker(marker, title) {
+    const infowindow = this.createInfoWindow(title);
+    marker.addListener('mouseover', () => {
+      infowindow.open(this.googleMaps, marker);
+    });
+    marker.addListener('mouseout', () => {
+      infowindow.close();
+    });
+  }
+
+  addMarker(position, icon, title) {
+    const marker = new google.maps.Marker({
       position: position,
       map: this.googleMaps,
       icon: icon
     });
+    if (title) {
+      this.addTitleToMarker(marker, title);
+    }
+    return marker;
   }
 
   load(apiKey, centerPosition) {
@@ -22,10 +42,6 @@ class Map {
         key: apiKey
       }).then(maps => {
         this.googleMaps = new google.maps.Map(document.getElementById('map'), {
-          /*
-           * TODO center data should be gotten from the server
-           * load maps after connecting to server
-           */
           center: centerPosition,
           zoom: 18 
         });

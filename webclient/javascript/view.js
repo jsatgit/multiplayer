@@ -11,8 +11,8 @@ class View {
     this.map = map;
   }
 
-  addPerson(position) {
-    return this.map.addMarker(position, PERSON_ICON);
+  addPerson(position, title) {
+    return this.map.addMarker(position, PERSON_ICON, title);
   }
 
   addHouse(position) {

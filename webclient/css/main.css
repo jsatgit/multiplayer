@@ -8,3 +8,7 @@ html, body {
   height: 100%;
   display: none;
 }
+
+.gm-style-iw + div {
+  display: none;
+}

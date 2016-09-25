@@ -14,7 +14,7 @@ class StatefulView {
   }
 
   addPerson(person) {
-    const personMarker = this.view.addPerson(person.position);
+    const personMarker = this.view.addPerson(person.position, person.name);
     this.peopleMarkers[person.id] = personMarker
   }
 
