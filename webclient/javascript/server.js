@@ -32,11 +32,8 @@ class Server {
     }
   }
 
-  addHouse(personId, position) {
-    this.socket.emit(Server.ADD_HOUSE, {
-      personId: personId,
-      position: position
-    });
+  addHouse(house) {
+    this.socket.emit(Server.ADD_HOUSE, house.serialize());
   }
 
   setPosition(personId, position) {

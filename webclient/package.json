@@ -4,7 +4,8 @@
   "description": "Multiplayer game",
   "main": "bundle.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "webpack --watch"
   },
   "repository": {
     "type": "git",

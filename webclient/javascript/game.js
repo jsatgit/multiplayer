@@ -5,6 +5,8 @@ import GameState from './gameState';
 import Stepper from './stepper';
 import View from './view';
 import Map from './map';
+import House from './house';
+import Person from './person';
 
 /*
  * The game is the central object that communicates
@@ -49,8 +51,9 @@ class Game {
   }
 
   buildHouse() {
-    this.server.addHouse(this.gameState.myId, this.gameState.myPosition);
-    this.statefulView.addHouse(this.gameState.myPosition);
+    const house = new House(this.gameState.myPosition, this.gameState.myId);
+    this.server.addHouse(house);
+    this.statefulView.addHouse(house);
   }
 
   /*
@@ -74,8 +77,10 @@ class Game {
     this.statefulView.addPerson(person);
   }
 
-  onAddHouse(house) {
-    this.statefulView.addHouse(house.position);
+  onAddHouse(data) {
+    // TODO do deserialization somewhere else
+    const house = House.deserialize(data)
+    this.statefulView.addHouse(house);
   }
 
   loadState(response) {
@@ -84,21 +89,38 @@ class Game {
     const view = new View(map);
     this.statefulView = new StatefulView(view)
     map.load(response.apiKey, response.myself.position).then(() => {
-      this.renderState(response.state);
+      // TODO do deserialization somewhere else
+      const state = this.deserializeState(response.state)
+      this.renderState(state);
     });
+  }
+
+  deserializeState(state) {
+    return {
+      'houses': House.deserializeCollection(state['houses']),
+      'people': Person.deserializeCollection(state['people'])
+    }
   }
 
   onRemovePerson(person) {
     this.statefulView.removePerson(person)
   }
 
-  renderState(people) {
+  renderPeople(people) {
     people.forEach(person => {
       this.statefulView.addPerson(person)
-      person.houses.forEach(house => {
-        this.statefulView.addHouse(house.position);
-      });
     })
+  }
+
+  renderHouses(houses) {
+    houses.forEach(house => {
+      this.statefulView.addHouse(house);
+    });
+  }
+
+  renderState(state) {
+    this.renderPeople(state['people']);
+    this.renderHouses(state['houses']);
   }
 
   load(formResult) {

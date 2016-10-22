@@ -1,18 +1,21 @@
+from person import Person
+from house import House
+
 class GameState:
     def __init__(self):
-        self.person_id = 0;
-        self.people = [];
+        self.person_id = 0
+        self.people = []
+        self.houses = []
 
     def get_initial_person_state(self, name):
-        return {
-            'id': self.person_id,
-            'name': name,
-            'position': {
+        return Person(
+            person_id=self.person_id,
+            name=name,
+            position={
                 'lat': 49.2838,
                 'lng': -122.7932
-            },
-            'houses': []
-        }
+            }
+        )
 
     def add_person(self, person):
         self.people.append(person)
@@ -27,13 +30,14 @@ class GameState:
         return person
 
     def set_position(self, personId, position):
-        self.people[personId]['position'] = position
+        self.people[personId].position = position
 
-    def add_house(self, personId, position):
-        self.people[personId]['houses'].append({
-            'position': position
-        })
+    def add_house(self, house):
+        self.houses.append(house)
 
     @property
-    def state(self):
-        return self.people
+    def serialized_state(self):
+        return {
+            'people': Person.serializeCollection(self.people),
+            'houses': House.serializeCollection(self.houses)
+        }
