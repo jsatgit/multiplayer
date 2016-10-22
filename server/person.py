@@ -3,6 +3,7 @@ class Person:
         self.id = person_id 
         self.name = name 
         self.position = position
+        self.active = True
 
     def serialize(self):
         return {
@@ -10,6 +11,9 @@ class Person:
             'name': self.name,
             'position': self.position
         }
+
+    def deactivate(self):
+        self.active = False
 
     @staticmethod
     def serializeCollection(people):

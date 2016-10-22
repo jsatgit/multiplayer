@@ -27,8 +27,8 @@ sid_to_person_map = {}
 def register_person(socket_id, person):
     sid_to_person_map[socket_id] = person;
 
-def get_registered_person(socket_id):
-    return sid_to_person_map.get(socket_id)
+def pop_registered_person(socket_id):
+    return sid_to_person_map.pop(socket_id)
 
 add_house = 'addHouse'
 set_position = 'setPosition'
@@ -59,7 +59,8 @@ def on_request_state(person_details):
 
 @socketio.on(disconnect)
 def on_user_disconnect():
-    person = get_registered_person(request.sid)
+    person = pop_registered_person(request.sid)
+    person.deactivate()
     send_to_everyone_else('removePerson', person.serialize());
 
 if __name__ == '__main__':

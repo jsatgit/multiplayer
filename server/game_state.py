@@ -37,7 +37,9 @@ class GameState:
 
     @property
     def serialized_state(self):
+        # right now we only return active people
+        active_people = [person for person in self.people if person.active]
         return {
-            'people': Person.serializeCollection(self.people),
+            'people': Person.serializeCollection(active_people),
             'houses': House.serializeCollection(self.houses)
         }
