@@ -61,4 +61,4 @@ def on_user_disconnect():
     send_to_everyone_else('removePerson', person);
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, host='', port=5000)
