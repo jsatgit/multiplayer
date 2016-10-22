@@ -11,8 +11,14 @@ class View {
     this.map = map;
   }
 
-  addPerson(position, title) {
-    return this.map.addMarker(position, PERSON_ICON, title);
+  addPerson(position, attributes) {
+    const content = ` 
+      <div>
+        <div>${attributes.name}</div>
+        <div>Gold: $${attributes.gold}</div>
+      </div>
+    `;
+    return this.map.addMarker(position, PERSON_ICON, content);
   }
 
   addHouse(position, title) {

@@ -8,14 +8,14 @@ class Map {
     this.googleMaps = null;
   }
 
-  createInfoWindow(title) {
+  createInfoWindow(content) {
     return new google.maps.InfoWindow({
-      content: title 
+      content: content 
     });
   }
 
-  addTitleToMarker(marker, title) {
-    const infowindow = this.createInfoWindow(title);
+  addContentToMarker(marker, content) {
+    const infowindow = this.createInfoWindow(content);
     marker.addListener('mouseover', () => {
       infowindow.open(this.googleMaps, marker);
     });
@@ -24,14 +24,14 @@ class Map {
     });
   }
 
-  addMarker(position, icon, title) {
+  addMarker(position, icon, content) {
     const marker = new google.maps.Marker({
       position: position,
       map: this.googleMaps,
       icon: icon
     });
-    if (title) {
-      this.addTitleToMarker(marker, title);
+    if (content) {
+      this.addContentToMarker(marker, content);
     }
     return marker;
   }

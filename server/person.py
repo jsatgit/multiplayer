@@ -3,13 +3,15 @@ class Person:
         self.id = person_id 
         self.name = name 
         self.position = position
+        self.gold = 100
         self.active = True
 
     def serialize(self):
         return {
             'id': self.id,
             'name': self.name,
-            'position': self.position
+            'position': self.position,
+            'gold': self.gold
         }
 
     def deactivate(self):
@@ -24,6 +26,7 @@ class Person:
         return cls(
             id=data.get('id'),
             name=data.get('name'),
-            position=data.get('position')
+            position=data.get('position'),
+            gold=data.get('gold')
         )
 
