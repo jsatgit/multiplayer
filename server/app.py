@@ -43,7 +43,7 @@ def on_add_house(data):
 
 @socketio.on(set_position)
 def on_set_position(data):
-    game.set_position(data['personId'], data['position'])
+    game.set_position(data['id'], data['position'])
     send_to_everyone_else(set_position, data);
 
 @socketio.on(request_state)

@@ -17,10 +17,17 @@ class Person {
     return new Person(person.id, person.name, person.position);
   }
 
-  static deserializeCollection(persons) {
-    return persons.map(person => {
+  static deserializeList(people) {
+    return people.map(person => {
       return Person.deserialize(person);
     });
+  }
+
+  static deserializeDict(people) {
+    return people.reduce((peopleDict, person) => {
+      peopleDict[person.id] = Person.deserialize(person);
+      return peopleDict;
+    }, {});
   }
 }
 

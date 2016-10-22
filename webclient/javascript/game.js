@@ -53,7 +53,9 @@ class Game {
   buildHouse() {
     const house = new House(this.gameState.myPosition, this.gameState.myId);
     this.server.addHouse(house);
-    this.statefulView.addHouse(house);
+    // TODO how can we move this method to a more natural place
+    const owner = this.gameState.getHouseOwner(house)
+    this.statefulView.addHouse(house, owner);
   }
 
   /*
@@ -70,56 +72,70 @@ class Game {
   }
 
   onSetPersonPosition(person) {
-    this.statefulView.updatePersonPosition(person.personId, person.position)
+    this.gameState.updatePersonPosition(person.id, person.position)
+    this.statefulView.updatePersonPosition(person.id, person.position)
   }
 
-  onAddPerson(person) {
+  onAddPerson(data) {
+    const person = Person.deserialize(data)
+    this.gameState.addPerson(person)
     this.statefulView.addPerson(person);
   }
 
   onAddHouse(data) {
     // TODO do deserialization somewhere else
-    const house = House.deserialize(data)
-    this.statefulView.addHouse(house);
+    const house = House.deserialize(data);
+    const owner = this.gameState.getHouseOwner(house);
+    this.gameState.addHouse(house);
+    this.statefulView.addHouse(house, owner);
   }
 
   loadState(response) {
-    this.gameState = new GameState(response.myself);
+    const {myself, state, apiKey} = response;
+    // TODO clean up loading logic
     const map = new Map();
     const view = new View(map);
+    // TODO do deserialization somewhere else
+    const deserializedState = this.deserializeState(state);
     this.statefulView = new StatefulView(view)
-    map.load(response.apiKey, response.myself.position).then(() => {
-      // TODO do deserialization somewhere else
-      const state = this.deserializeState(response.state)
-      this.renderState(state);
+    this.gameState = new GameState(
+      myself,
+      deserializedState.peopleDict,
+      deserializedState.houses
+    );
+    map.load(apiKey, myself.position).then(() => {
+      this.renderState(deserializedState);
     });
   }
 
   deserializeState(state) {
     return {
-      'houses': House.deserializeCollection(state['houses']),
-      'people': Person.deserializeCollection(state['people'])
+      'peopleDict': Person.deserializeDict(state.people),
+      'peopleList': Person.deserializeList(state.people),
+      'houses': House.deserializeList(state.houses)
     }
   }
 
   onRemovePerson(person) {
-    this.statefulView.removePerson(person)
+    this.gameState.removePerson(person);
+    this.statefulView.removePerson(person);
   }
 
   renderPeople(people) {
     people.forEach(person => {
-      this.statefulView.addPerson(person)
+      this.statefulView.addPerson(person);
     })
   }
 
   renderHouses(houses) {
     houses.forEach(house => {
-      this.statefulView.addHouse(house);
+      const owner = this.gameState.getHouseOwner(house)
+      this.statefulView.addHouse(house, owner);
     });
   }
 
   renderState(state) {
-    this.renderPeople(state['people']);
+    this.renderPeople(state['peopleList']);
     this.renderHouses(state['houses']);
   }
 

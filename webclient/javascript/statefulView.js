@@ -9,8 +9,8 @@ class StatefulView {
     this.peopleMarkers = {};
   }
 
-  addHouse(house) {
-    this.view.addHouse(house.position);
+  addHouse(house, owner) {
+    this.view.addHouse(house.position, `${owner.name}\'s house`);
   }
 
   addPerson(person) {

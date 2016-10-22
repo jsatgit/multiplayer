@@ -15,7 +15,8 @@ class House {
     return new House(house.position, house.owner);
   }
 
-  static deserializeCollection(houses) {
+  //TODO Consider a baseclass for these
+  static deserializeList(houses) {
     return houses.map(house => {
       return House.deserialize(house);
     });

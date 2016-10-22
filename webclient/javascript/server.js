@@ -36,9 +36,10 @@ class Server {
     this.socket.emit(Server.ADD_HOUSE, house.serialize());
   }
 
-  setPosition(personId, position) {
+  // TODO call this update position
+  setPosition(id, position) {
     this.socket.emit(Server.SET_POSITION, {
-      personId: personId,
+      id: id,
       position: position
     });
   }
