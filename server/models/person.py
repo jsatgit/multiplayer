@@ -30,7 +30,7 @@ class Person:
         self.gold = 100
         self.active = True
 
-    def serialize(self):
+    def pack(self):
         return {
             'id': self.id,
             'name': self.name,
@@ -40,19 +40,6 @@ class Person:
 
     def deactivate(self):
         self.active = False
-
-    @staticmethod
-    def serializeCollection(people):
-        return [person.serialize() for person in people]
-
-    @classmethod
-    def deserialize(cls, data):
-        return cls(
-            id=data.get('id'),
-            name=data.get('name'),
-            position=data.get('position'),
-            gold=data.get('gold')
-        )
 
     def move_up(self):
         self.position = up(self.position)
@@ -65,5 +52,3 @@ class Person:
 
     def move_left(self):
         self.position = left(self.position)
-
-
