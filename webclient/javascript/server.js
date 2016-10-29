@@ -1,52 +1,59 @@
+let _socket;
+
 class Server {
-  constructor(host, port) {
-    this.host = host;
-    this.port = port;
-    this.socket = null;
-    this.bindings = null;
-  }
+  static get REGISTER_USER() { return 'register_user'; }
+  static get GAME_STATE() { return 'game_state'; }
+  static get MOVE_UP() { return 'move_up'; }
+  static get MOVE_DOWN() { return  'move_down'; }
+  static get MOVE_RIGHT() { return  'move_right'; }
+  static get MOVE_LEFT() { return  'move_left'; }
+  static get ADD_HOUSE() { return  'add_house'; }
+  static get ADD_PERSON() { return  'add_person'; }
+  static get REMOVE_PERSON() { return  'remove_person'; }
+  static get UPDATE_POSITION() { return  'update_position'; }
 
-  static get SET_POSITION() { return 'setPosition'; }
-  static get ADD_PERSON() { return 'addPerson'; }
-  static get ADD_HOUSE() { return 'addHouse'; }
-  static get REQUEST_STATE() { return 'requestState'; }
-  static get REMOVE_PERSON() { return 'removePerson'; }
-
-  connect() {
+  static connect(host, port) {
     return new Promise((resolve, reject) => {
-      const address = `http://${this.host}:${this.port}`;
-      this.socket = io.connect(address);
-      this.socket.on('connect', () => {
+      const address = `http://${host}:${port}`;
+      _socket = io.connect(address);
+      _socket.on('connect', () => {
         resolve();
       });
     });
   }
 
-  setBindings(bindings, context) {
-    this.bindings = bindings;
-    for (let evt in this.bindings) {
-      this.bindings[evt] = this.bindings[evt].bind(context);
-      this.socket.on(evt, response => {
-        this.bindings[evt](response);
+  static addMapping(mapping) {
+    for (let evt in mapping) {
+      _socket.on(evt, response => {
+        mapping[evt](response);
       });
     }
   }
 
-  addHouse(house) {
-    this.socket.emit(Server.ADD_HOUSE, house.serialize());
+  static registerUser(formResult) {
+    _socket.emit(Server.REGISTER_USER, formResult);
   }
 
-  // TODO call this update position
-  setPosition(id, position) {
-    this.socket.emit(Server.SET_POSITION, {
-      id: id,
-      position: position
-    });
+  static moveUp() {
+    _socket.emit(Server.MOVE_UP);
   }
 
-  requestState(formResult) {
-    this.socket.emit(Server.REQUEST_STATE, formResult);
+  static moveDown() {
+    _socket.emit(Server.MOVE_DOWN);
   }
+
+  static moveRight() {
+    _socket.emit(Server.MOVE_RIGHT);
+  }
+
+  static moveLeft() {
+    _socket.emit(Server.MOVE_LEFT);
+  }
+
+  static addHouse() {
+    _socket.emit(Server.ADD_HOUSE);
+  }
+
 }
 
 export default Server;

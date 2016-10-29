@@ -1,11 +1,15 @@
+import Page from './page'
+
 const ENTER_KEY = 13
 
-class Form {
-  constructor() {
-    this.form = document.getElementById('form');
+const el = document.getElementById('form');
+
+class Form extends Page {
+  static get element() {
+    return el;
   }
 
-  submit() {
+  static submit() {
     return new Promise(resolve => {
       const nameInputField = document.getElementById('name');
       nameInputField.addEventListener('keyup', evt => {
@@ -16,10 +20,6 @@ class Form {
         }
       });
     });
-  }
-
-  hide() {
-    this.form.style.display = 'none';
   }
 }
 

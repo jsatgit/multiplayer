@@ -1,54 +1,68 @@
 import loadGoogleMapsAPI from 'load-google-maps-api';
+import Page from './page'
+
+let googleMaps = null;
+let mapElement = document.getElementById('map');
+let mapPromise = null;
+
+function addContentToMarker(marker, content) {
+  const infowindow = createInfoWindow(content);
+  marker.addListener('mouseover', () => {
+    infowindow.open(googleMaps, marker);
+  });
+  marker.addListener('mouseout', () => {
+    infowindow.close();
+  });
+}
+
+function createInfoWindow(content) {
+  return new google.maps.InfoWindow({
+    content: content 
+  });
+}
 
 /**
  * Interface with google maps api
  */
-class Map {
-  constructor() {
-    this.googleMaps = null;
-  }
-
-  createInfoWindow(content) {
-    return new google.maps.InfoWindow({
-      content: content 
-    });
-  }
-
-  addContentToMarker(marker, content) {
-    const infowindow = this.createInfoWindow(content);
-    marker.addListener('mouseover', () => {
-      infowindow.open(this.googleMaps, marker);
-    });
-    marker.addListener('mouseout', () => {
-      infowindow.close();
-    });
-  }
-
-  addMarker(position, icon, content) {
+class Map extends Page {
+  static addMarker(markerOptions) {
     const marker = new google.maps.Marker({
-      position: position,
-      map: this.googleMaps,
-      icon: icon
+      position: markerOptions.position,
+      map: googleMaps,
+      icon: markerOptions.icon
     });
-    if (content) {
-      this.addContentToMarker(marker, content);
+    if (markerOptions.content) {
+      addContentToMarker(marker, markerOptions.content);
     }
     return marker;
   }
 
-  load(apiKey, centerPosition) {
-    return new Promise((resolve, reject) => {
+  static load(mapInfo) {
+    mapPromise = new Promise((resolve, reject) => {
       loadGoogleMapsAPI({
-        key: apiKey
+        key: mapInfo.apiKey
       }).then(maps => {
-        this.googleMaps = new google.maps.Map(document.getElementById('map'), {
-          center: centerPosition,
+        googleMaps = new google.maps.Map(mapElement, {
+          center: mapInfo.centerPosition,
           zoom: 18 
         });
         resolve();
       });
     });
   } 
+    
+  static isReady() {
+    return googleMaps;
+  }
+
+  static onReady(func) {
+    mapPromise.then(func);
+  }
+
+  static get element() {
+    return mapElement;
+  }
+
 }
 
 export default Map;

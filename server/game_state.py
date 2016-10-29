@@ -36,10 +36,10 @@ class GameState:
         self.houses.append(house)
 
     @property
-    def serialized_state(self):
-        # right now we only return active people
+    def serialized_people(self):
         active_people = [person for person in self.people if person.active]
-        return {
-            'people': Person.serializeCollection(active_people),
-            'houses': House.serializeCollection(self.houses)
-        }
+        return Person.serializeCollection(active_people)
+
+    @property
+    def serialized_houses(self):
+        return House.serializeCollection(self.houses)

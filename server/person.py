@@ -1,3 +1,27 @@
+def up(position):
+    return {
+        'lat': position.get('lat') + 0.00001,
+        'lng': position.get('lng')
+    }
+
+def down(position):
+    return {
+        'lat': position.get('lat') - 0.00001,
+        'lng': position.get('lng')
+    }
+
+def right(position):
+    return {
+        'lat': position.get('lat'),
+        'lng': position.get('lng') + 0.00001
+    }
+
+def left(position):
+    return {
+        'lat': position.get('lat'),
+        'lng': position.get('lng') - 0.00001
+    }
+
 class Person:
     def __init__(self, person_id, name, position):
         self.id = person_id 
@@ -29,4 +53,17 @@ class Person:
             position=data.get('position'),
             gold=data.get('gold')
         )
+
+    def move_up(self):
+        self.position = up(self.position)
+
+    def move_down(self):
+        self.position = down(self.position)
+
+    def move_right(self):
+        self.position = right(self.position)
+
+    def move_left(self):
+        self.position = left(self.position)
+
 

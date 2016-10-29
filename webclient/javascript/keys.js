@@ -5,22 +5,10 @@ class Keys {
   static get LEFT() { return 97; }
   static get SPACE() { return 32; }
 
-  attachContextToBindings(context) {
-    for (let keyCode in this.bindings) {
-      this.bindings[keyCode] = this.bindings[keyCode].bind(context);
-    }
-  }
-
-  registerBindingWithKeyPress() {
+  static addMapping(mapping) {
     document.addEventListener('keypress', evt => {
-      this.bindings[evt.which]();
+      mapping[evt.which]();
     });
-  }
-
-  setBindings(bindings, context) {
-    this.bindings = bindings;
-    this.attachContextToBindings(context);
-    this.registerBindingWithKeyPress();
   }
 }
 
