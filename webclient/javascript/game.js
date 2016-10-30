@@ -4,7 +4,6 @@ import GameView from './views/gameView'
 import Houses from './models/houses'
 import Person from './models/person'
 import Keys from './keys'
-import Stepper from './stepper' 
 import Pages from './pages' 
 import Form from './form'
 import Map from './map'
@@ -27,10 +26,10 @@ function setServerBindings() {
 
 function setKeyBindings() {
   Keys.addMapping({
-    [Keys.UP]:     Server.moveUp,
-    [Keys.DOWN]:   Server.moveDown,
-    [Keys.RIGHT]:  Server.moveRight,
-    [Keys.LEFT]:   Server.moveLeft,
+    [Keys.UP]:     () => Server.move(Server.UP),
+    [Keys.DOWN]:   () => Server.move(Server.DOWN),
+    [Keys.RIGHT]:  () => Server.move(Server.RIGHT),
+    [Keys.LEFT]:   () => Server.move(Server.LEFT),
     [Keys.SPACE]:  Server.addHouse
   });
 }

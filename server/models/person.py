@@ -22,10 +22,17 @@ def left(position):
         'lng': position.get('lng') - 0.00001
     }
 
+_move_funcs = {
+    'up': up,
+    'down': down,
+    'right': right,
+    'left': left
+}
+
 class Person:
     def __init__(self, person_id, name, position):
-        self.id = person_id 
-        self.name = name 
+        self.id = person_id
+        self.name = name
         self.position = position
         self.gold = 100
         self.active = True
@@ -41,14 +48,5 @@ class Person:
     def deactivate(self):
         self.active = False
 
-    def move_up(self):
-        self.position = up(self.position)
-
-    def move_down(self):
-        self.position = down(self.position)
-
-    def move_right(self):
-        self.position = right(self.position)
-
-    def move_left(self):
-        self.position = left(self.position)
+    def move(self, direction):
+        self.position = _move_funcs[direction](self.position)
