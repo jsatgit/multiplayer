@@ -37,6 +37,9 @@ class House extends View {
 
   handler() {
     return {
+      [HouseModel.REMOVE]: () => {
+        this.marker.setMap(null);
+      }
     }
   }
 }

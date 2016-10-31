@@ -1,11 +1,11 @@
-import Model from './model' 
+import Model from './model'
 import Server from '../server'
 import House from './house'
 
 class Houses extends Model {
   constructor() {
     super();
-    this.houses = [];
+    this.houses = {};
     this.addServerMapping();
   }
 
@@ -19,15 +19,12 @@ class Houses extends Model {
 
   addHouse(house) {
     const houseModel = House.unpack(house);
-    this.houses.push(houseModel);
+    if (this.houses[houseModel.owner]) {
+      this.houses[houseModel.owner].push(houseModel);
+    } else {
+      this.houses[houseModel.owner] = [houseModel];
+    }
     this.notify(Houses.ADD_HOUSE, houseModel);
-  }
-
-  static unpack(houses) {
-    const unpackedHouses = houses.map(house => {
-      return House.unpack(house);
-    });
-    return new Houses(unpackedHouses);
   }
 
   addServerMapping() {
@@ -36,6 +33,11 @@ class Houses extends Model {
         this.addHouse(house);
       }
     });
+  }
+
+  removeHouses(owner) {
+    this.houses[owner].forEach(house => house.remove());
+    delete this.houses[owner];
   }
 }
 

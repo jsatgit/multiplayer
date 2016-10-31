@@ -1,6 +1,7 @@
 import Model from './model'
 import People from './people'
 import Houses from './houses'
+import Server from '../server'
 
 let _myself = null;
 
@@ -13,6 +14,7 @@ class GameModel extends Model {
     super();
     this.people = new People();
     this.houses = new Houses();
+    this.addServerMapping();
   }
 
   static get my() {
@@ -36,6 +38,15 @@ class GameModel extends Model {
 
   step(direction) {
     this.people.step(_myself, direction);
+  }
+
+  addServerMapping() {
+    Server.addMapping({
+      [Server.REMOVE_PERSON]: personId => {
+        this.people.removePerson(personId);
+        this.houses.removeHouses(personId);
+      }
+    });
   }
 }
 

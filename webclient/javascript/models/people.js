@@ -28,12 +28,9 @@ class People extends Model {
     this.notify(People.ADD_PERSON, personModel);
   }
 
-  static unpack(people) {
-    const unpackedPeople = people.reduce((peopleDict, person) => {
-      peopleDict[person.id] = Person.unpack(person);
-      return peopleDict;
-    }, {});
-    return new People(unpackedPeople);
+  removePerson(personId) {
+    _people[personId].remove();
+    delete _people[personId];
   }
 
   addServerMapping() {
@@ -44,10 +41,6 @@ class People extends Model {
       },
       [Server.ADD_PERSON]: person => {
         this.addPerson(person);
-      },
-      [Server.REMOVE_PERSON]: personId => {
-        _people[personId].remove();
-        delete _people[personId];
       }
     });
   }

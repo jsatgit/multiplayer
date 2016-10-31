@@ -33,4 +33,7 @@ def pack_people():
     return [person.pack() for person in Game.people if person.active]
 
 def pack_houses():
-    return [house.pack() for house in Game.houses]
+    return [
+        house.pack() for house in Game.houses
+        if Game.people[house.owner].active
+    ]
