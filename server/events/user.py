@@ -16,7 +16,7 @@ DISCONNECT = 'disconnect'
 
 @socketio.on(REGISTER_USER)
 def on_register_user(user):
-    person = create_person(name=user['name'], sid=request.sid)
+    person = create_person(name=user.get('name'), sid=request.sid)
     send_back(GAME_STATE, {
         'myself': person.pack(),
         'people': pack_people(),

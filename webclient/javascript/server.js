@@ -31,8 +31,8 @@ class Server {
     }
   }
 
-  static registerUser(formResult) {
-    emit(Server.REGISTER_USER, formResult);
+  static registerUser(options) {
+    emit(Server.REGISTER_USER, options);
   }
 
   static move(options) {

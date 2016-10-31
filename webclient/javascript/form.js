@@ -11,11 +11,13 @@ class Form extends Page {
 
   static submit() {
     return new Promise(resolve => {
-      const nameInputField = document.getElementById('name');
-      nameInputField.addEventListener('keyup', evt => {
+      const nameInput = document.getElementById('name');
+      const hostInput = document.getElementById('host');
+      el.addEventListener('keyup', evt => {
         if (evt.which == ENTER_KEY) {
           resolve({
-            'name': nameInputField.value
+            'name': nameInput.value,
+            'host': hostInput.value
           })
         }
       });

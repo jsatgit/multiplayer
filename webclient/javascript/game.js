@@ -16,13 +16,14 @@ import ClickMover from './controllers/clickMover'
 class Game {
   start() {
     Pages.show(Form)
-    const formPromise = Form.submit();
-    const serverPromise = Server.connect('localhost', '5000');
-    Promise.all([serverPromise, formPromise]).then(results => {
-      const [serverResult, formResult] = results;
+    Form.submit().then(formResults => {
+      const host = formResults.host || 'localhost';
+      return [formResults.name, Server.connect(host, '5000')];
+    }).then(results => {
+      const [name, _] = results;
       Pages.show(Map);
       addServerMapping();
-      Server.registerUser(formResult);
+      Server.registerUser({ name: name });
       addKeyMapping();
       ClickMover.enable();
     });
