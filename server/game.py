@@ -5,7 +5,7 @@ class Game:
     person_id = 0
     people = []
     houses = []
-    sid_to_person = {} 
+    sid_to_person = {}
 
 def create_person(name, sid):
     person = Person(
@@ -30,7 +30,7 @@ def get_person(sid):
     return Game.sid_to_person.get(sid)
 
 def pack_people():
-    return [person.pack() for person in Game.people] 
+    return [person.pack() for person in Game.people if person.active]
 
 def pack_houses():
-    return [house.pack() for house in Game.houses] 
+    return [house.pack() for house in Game.houses]

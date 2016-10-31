@@ -1,35 +1,6 @@
-def up(position):
-    return {
-        'lat': position.get('lat') + 0.00001,
-        'lng': position.get('lng')
-    }
-
-def down(position):
-    return {
-        'lat': position.get('lat') - 0.00001,
-        'lng': position.get('lng')
-    }
-
-def right(position):
-    return {
-        'lat': position.get('lat'),
-        'lng': position.get('lng') + 0.00001
-    }
-
-def left(position):
-    return {
-        'lat': position.get('lat'),
-        'lng': position.get('lng') - 0.00001
-    }
-
-_move_funcs = {
-    'up': up,
-    'down': down,
-    'right': right,
-    'left': left
-}
-
 class Person:
+    STEP_SIZE = 0.00001
+
     def __init__(self, person_id, name, position):
         self.id = person_id
         self.name = name
@@ -48,5 +19,25 @@ class Person:
     def deactivate(self):
         self.active = False
 
-    def move(self, direction):
-        self.position = _move_funcs[direction](self.position)
+    def move_direction(self, direction):
+        self.position = _move_direction[direction](self.position)
+
+    def move_step(self, step):
+        self.position = make_step(
+            position=self.position,
+            lat=step.get('lat'),
+            lng=step.get('lng')
+        )
+
+def make_step(position, lat=0, lng=0):
+    return {
+        'lat': position.get('lat') + lat,
+        'lng': position.get('lng') + lng,
+    }
+
+_move_direction = {
+    'up': lambda position: make_step(position, lat=Person.STEP_SIZE),
+    'down': lambda position: make_step(position, lat=-Person.STEP_SIZE),
+    'right': lambda position: make_step(position, lng=Person.STEP_SIZE),
+    'left': lambda position: make_step(position, lng=-Person.STEP_SIZE)
+}

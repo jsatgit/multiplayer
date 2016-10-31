@@ -32,17 +32,26 @@ class Server {
   }
 
   static registerUser(formResult) {
-    _socket.emit(Server.REGISTER_USER, formResult);
+    emit(Server.REGISTER_USER, formResult);
   }
 
-  static move(direction) {
-    _socket.emit(Server.MOVE, direction);
+  static move(options) {
+    emit(Server.MOVE, options);
   }
 
   static addHouse() {
-    _socket.emit(Server.ADD_HOUSE);
+    emit(Server.ADD_HOUSE);
   }
 
+}
+
+function emit(evt, data) {
+  console.log(`[${evt}] => ${JSON.stringify(data)}`)
+  if (data) {
+    _socket.emit(evt, data);
+  } else {
+    _socket.emit(evt);
+  }
 }
 
 export default Server;

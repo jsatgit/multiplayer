@@ -2,6 +2,8 @@ import Model from './model'
 import People from './people'
 import Houses from './houses'
 
+let _myself = null;
+
 class GameModel extends Model {
   static get SET_MAP_INFO() { return 'set_map_info'; }
   static get SET_PEOPLE() { return 'add_people'; }
@@ -9,13 +11,16 @@ class GameModel extends Model {
 
   constructor() {
     super();
-    this.myself = null;
     this.people = new People();
     this.houses = new Houses();
   }
 
+  static get my() {
+    return _myself;
+  }
+
   setState(state) {
-    this.myself = state.myself;
+    _myself = state.myself;
 
     this.notify(GameModel.SET_MAP_INFO, {
       apiKey: state.apiKey,
@@ -30,7 +35,7 @@ class GameModel extends Model {
   }
 
   step(direction) {
-    this.people.step(this.myself, direction);
+    this.people.step(_myself, direction);
   }
 }
 

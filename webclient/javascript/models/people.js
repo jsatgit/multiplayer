@@ -1,4 +1,4 @@
-import Person from './person' 
+import Person from './person'
 import Model from './model'
 import Server from '../server'
 
