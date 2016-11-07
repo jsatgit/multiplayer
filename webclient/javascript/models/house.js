@@ -1,8 +1,9 @@
 import Model from './model' 
 
 class House extends Model {
-  constructor(position, owner) {
+  constructor(id, position, owner) {
     super();
+    this.id = id;
     this.position = position;
     this.owner = owner;
   }
@@ -11,6 +12,7 @@ class House extends Model {
 
   static unpack(house) {
     return new House(
+        house.id,
         house.position,
         house.owner
     );

@@ -13,11 +13,13 @@ class Form extends Page {
     return new Promise(resolve => {
       const nameInput = document.getElementById('name');
       const hostInput = document.getElementById('host');
+      const botInput = document.getElementById('bot');
       el.addEventListener('keyup', evt => {
         if (evt.which == ENTER_KEY) {
           resolve({
             'name': nameInput.value,
-            'host': hostInput.value
+            'host': hostInput.value,
+            'isBot': botInput.checked
           })
         }
       });

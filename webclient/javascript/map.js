@@ -1,5 +1,6 @@
 import loadGoogleMapsAPI from 'load-google-maps-api';
 import Page from './page'
+import Marker from './marker'
 
 let googleMap = null;
 let mapElement = document.getElementById('map');
@@ -13,13 +14,11 @@ class Map extends Page {
   static get CLICK() {return 'click';}
 
   static addMarker(markerOptions) {
-    const marker = new google.maps.Marker({
-      position: markerOptions.position,
-      map: googleMap,
-      icon: markerOptions.icon
-    });
-    if (markerOptions.content) {
-      addContentToMarker(marker, markerOptions.content);
+    const marker = new Marker(markerOptions);
+    if (isReady()) {
+      marker.setMap(googleMap);
+    } else {
+      mapPromise.then(() => marker.setMap(googleMap));
     }
     return marker;
   }
@@ -31,54 +30,29 @@ class Map extends Page {
       }).then(maps => {
         googleMap = new google.maps.Map(mapElement, {
           center: mapInfo.centerPosition,
-          zoom: 18 
+          zoom: 18
         });
         setEventMappings();
         resolve();
       });
     });
-  } 
+  }
 
   static addMapping(mapping) {
-    if (Map.isReady()) {
+    if (isReady()) {
       addEventMapping(mapping)
     } else {
       eventMappings.push(mapping);
     }
   }
-    
-  static isReady() {
-    return googleMap;
-  }
-
-  static onReady(func) {
-    mapPromise.then(func);
-  }
 
   static get element() {
     return mapElement;
   }
-
 }
 
 const eventWrapper = {
   [Map.CLICK]: evt => evt.latLng.toJSON()
-}
-
-function addContentToMarker(marker, content) {
-  const infowindow = createInfoWindow(content);
-  marker.addListener('mouseover', () => {
-    infowindow.open(googleMap, marker);
-  });
-  marker.addListener('mouseout', () => {
-    infowindow.close();
-  });
-}
-
-function createInfoWindow(content) {
-  return new google.maps.InfoWindow({
-    content: content 
-  });
 }
 
 function addEventMapping(mapping) {
@@ -94,6 +68,10 @@ function setEventMappings() {
   while (eventMappings.length) {
     addEventMapping(eventMappings.pop())
   }
+}
+
+function isReady() {
+  return googleMap;
 }
 
 export default Map;

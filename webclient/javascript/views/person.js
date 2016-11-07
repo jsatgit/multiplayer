@@ -10,28 +10,18 @@ class Person extends View {
     this.marker = null;
   }
 
-  actualRender(personModel) {
-    const content = ` 
+  render(personModel) {
+    const content = `
       <div>
         <div>${personModel.name}</div>
         <div>Gold: $${personModel.gold}</div>
       </div>
     `;
     this.marker = Map.addMarker({
-      position: personModel.position, 
-      icon: PERSON_ICON, 
+      position: personModel.position,
+      icon: PERSON_ICON,
       content: content
     });
-  }
-
-  render(personModel) {
-    if (Map.isReady()) {
-      this.actualRender(personModel);
-    } else {
-      Map.onReady(() => {
-        this.actualRender(personModel);
-      });
-    }
   }
 
   handler() {
@@ -40,7 +30,7 @@ class Person extends View {
         this.marker.setPosition(position);
       },
       [PersonModel.REMOVE]: () => {
-        this.marker.setMap(null);
+        this.marker.remove();
       }
     }
   }

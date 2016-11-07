@@ -18,14 +18,19 @@ class Game {
     Pages.show(Form)
     Form.submit().then(formResults => {
       const host = formResults.host || 'localhost';
-      return [formResults.name, Server.connect(host, '5000')];
+      console.log(formResults)
+      return [formResults, Server.connect(host, '5000')];
     }).then(results => {
-      const [name, _] = results;
+      const [formResults, _] = results;
       Pages.show(Map);
       addServerMapping();
-      Server.registerUser({ name: name });
-      addKeyMapping();
-      ClickMover.enable();
+      Server.registerUser(formResults);
+      if (formResults.isBot) {
+        // wait until the view has completed loading
+      } else {
+        addKeyMapping();
+        ClickMover.enable();
+      }
     });
   }
 }

@@ -7,6 +7,7 @@ import Server from '../server'
 let timeout = null;
 
 class ClickMover {
+  // TODO rename this classs
   static get INTERVAL() { return 20; }
 
   static enable() {

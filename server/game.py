@@ -1,8 +1,14 @@
 from models.person import Person
 from models.house import House
 
+COQUITLAM = {
+    'lat': 49.2838,
+    'lng': -122.7932
+}
+
 class Game:
     person_id = 0
+    house_id = 0
     people = []
     houses = []
     sid_to_person = {}
@@ -11,10 +17,7 @@ def create_person(name, sid):
     person = Person(
         person_id=Game.person_id,
         name=name,
-        position={
-            'lat': 49.2838,
-            'lng': -122.7932
-        }
+        position=COQUITLAM
     )
     Game.person_id += 1
     Game.people.append(person)
@@ -22,7 +25,12 @@ def create_person(name, sid):
     return person
 
 def create_house(person):
-    house = House(person.position, person.id)
+    house = House(
+        house_id=Game.house_id,
+        position=person.position,
+        owner=person.id
+    )
+    Game.house_id += 1
     Game.houses.append(house)
     return house
 
