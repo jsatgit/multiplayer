@@ -29,10 +29,12 @@ class WalkerBot extends Bot {
 
 function moveToRandomHouse() {
   const owners = Object.keys(Houses.directory);
-  const randomOwner = randomItem(owners);
-  const houses = Houses.directory[randomOwner];
-  const house = randomItem(houses);
-  Mover.moveTo(house.position);
+  if (owners.length) {
+    const randomOwner = randomItem(owners);
+    const houses = Houses.directory[randomOwner];
+    const house = randomItem(houses);
+    Mover.moveTo(house.position);
+  }
 }
 
 export default WalkerBot;

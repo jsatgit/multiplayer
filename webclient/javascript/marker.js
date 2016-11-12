@@ -22,7 +22,9 @@ class Marker {
   }
 
   setPosition(position) {
-    this.marker.setPosition(position);
+    if (this.marker) {
+      this.marker.setPosition(position);
+    }
   }
 
   remove() {
