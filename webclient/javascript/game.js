@@ -7,7 +7,7 @@ import Keys from './controllers/keys'
 import Pages from './pages'
 import Form from './form'
 import Map from './map'
-import ClickMover from './controllers/clickMover'
+import Mover from './controllers/mover'
 
 let isBot = false;
 
@@ -29,7 +29,7 @@ class Game {
       Server.registerUser(formResults);
       if (!isBot) {
         addKeyMapping();
-        ClickMover.enable();
+        Mover.listenToClicks();
       }
     });
   }
@@ -62,7 +62,7 @@ function addKeyMapping() {
 }
 
 function move(direction) {
-  ClickMover.stop();
+  Mover.stop();
   Server.move({ direction: direction });
 }
 

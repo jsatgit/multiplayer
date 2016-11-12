@@ -1,6 +1,6 @@
 import Bot from './bot';
 import Houses from './models/houses.js';
-import ClickMover from './controllers/clickMover';
+import Mover from './controllers/mover';
 
 function randomItem(lst) {
   return lst[Math.floor(Math.random() * lst.length)];
@@ -12,7 +12,7 @@ class WalkerBot extends Bot {
     const randomOwner = randomItem(owners);
     const houses = Houses.directory[randomOwner];
     const house = randomItem(houses);
-    ClickMover.recurseMove(house.position);
+    Mover.moveTo(house.position);
   }
 }
 

@@ -5,20 +5,12 @@ import Person from '../models/person'
 import Server from '../server'
 
 let timeout = null;
+const INTERVAL = 20;
 
-class ClickMover {
-  // TODO rename this classs
-  static get INTERVAL() { return 20; }
+class Mover {
 
-  static enable() {
+  static listenToClicks() {
     addMapMapping();
-  }
-
-  static start(targetPosition) {
-    timeout = setTimeout(
-      () => ClickMover.recurseMove(targetPosition),
-      ClickMover.INTERVAL
-    );
   }
 
   static stop() {
@@ -28,28 +20,32 @@ class ClickMover {
     }
   }
 
-  static recurseMove(targetPosition) {
+  static moveTo(targetPosition) {
     const my = People.directory[GameModel.my.id];
     if (Person.isClose(my.position, targetPosition)) {
-      ClickMover.stop();
+      Mover.stop();
     } else {
       const step = Person.stepTowards(
         my.position,
         targetPosition
       );
       Server.move({ step: step });
-      ClickMover.start(targetPosition);
+      recurseMoveTo(targetPosition);
     }
   }
+}
+
+function recurseMoveTo(targetPosition) {
+  timeout = setTimeout(() => Mover.moveTo(targetPosition), INTERVAL);
 }
 
 function addMapMapping() {
   Map.addMapping({
     [Map.CLICK]: targetPosition => {
-      ClickMover.stop();
-      ClickMover.recurseMove(targetPosition);
+      Mover.stop();
+      Mover.moveTo(targetPosition);
     }
   })
 }
 
-export default ClickMover;
+export default Mover;
