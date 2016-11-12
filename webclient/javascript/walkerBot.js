@@ -6,14 +6,33 @@ function randomItem(lst) {
   return lst[Math.floor(Math.random() * lst.length)];
 }
 
+const WALK = 'walk';
+
+
 class WalkerBot extends Bot {
-  onGameLoaded() {
-    const owners = Object.keys(Houses.directory);
-    const randomOwner = randomItem(owners);
-    const houses = Houses.directory[randomOwner];
-    const house = randomItem(houses);
-    Mover.moveTo(house.position);
+  constructor() {
+    super();
+    Mover.addStopListener(() => this.onActionFinished(WALK));
   }
+
+  onGameLoaded() {
+    moveToRandomHouse();
+  }
+
+  onActionFinished(action) {
+    switch(action) {
+      case WALK:
+        moveToRandomHouse();
+    }
+  }
+}
+
+function moveToRandomHouse() {
+  const owners = Object.keys(Houses.directory);
+  const randomOwner = randomItem(owners);
+  const houses = Houses.directory[randomOwner];
+  const house = randomItem(houses);
+  Mover.moveTo(house.position);
 }
 
 export default WalkerBot;

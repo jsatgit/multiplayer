@@ -1,4 +1,4 @@
-import Model from './model' 
+import Model from './model'
 
 class House extends Model {
   constructor(id, position, owner) {

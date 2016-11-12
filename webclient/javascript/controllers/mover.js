@@ -6,11 +6,15 @@ import Server from '../server'
 
 let timeout = null;
 const INTERVAL = 20;
+const stopListeners = [];
 
 class Mover {
-
   static listenToClicks() {
     addMapMapping();
+  }
+
+  static addStopListener(callback) {
+    stopListeners.push(callback);
   }
 
   static stop() {
@@ -18,6 +22,7 @@ class Mover {
       clearTimeout(timeout);
       timeout = null;
     }
+    stopListeners.forEach(callback => callback());
   }
 
   static moveTo(targetPosition) {
