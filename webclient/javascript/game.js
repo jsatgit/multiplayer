@@ -45,6 +45,7 @@ function addServerMapping() {
         myself: Person.unpack(gameState.myself),
         people: gameState.people,
         houses: gameState.houses,
+        resources: gameState.resources,
         apiKey: gameState.apiKey
       });
     }

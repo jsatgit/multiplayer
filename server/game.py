@@ -1,23 +1,24 @@
 from models.person import Person
 from models.house import House
 
-COQUITLAM = {
-    'lat': 49.2838,
-    'lng': -122.7932
-}
+import models.resources as resources
 
 class Game:
     person_id = 0
     house_id = 0
     people = []
     houses = []
+    resources = None
     sid_to_person = {}
+
+def init_game():
+    Game.resources = resources.create_all()
 
 def create_person(name, sid):
     person = Person(
         person_id=Game.person_id,
         name=name,
-        position=COQUITLAM
+        position=resources.COQUITLAM
     )
     Game.person_id += 1
     Game.people.append(person)
@@ -45,3 +46,6 @@ def pack_houses():
         house.pack() for house in Game.houses
         if Game.people[house.owner].active
     ]
+
+def pack_resources():
+    return Game.resources

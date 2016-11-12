@@ -8,8 +8,9 @@ let _myself = null;
 
 class GameModel extends Model {
   static get SET_MAP_INFO() { return 'set_map_info'; }
-  static get SET_PEOPLE() { return 'add_people'; }
-  static get SET_HOUSES() { return 'add_houses'; }
+  static get SET_PEOPLE() { return 'set_people'; }
+  static get SET_HOUSES() { return 'set_houses'; }
+  static get SET_RESOURCES() { return 'set_resources'; }
 
   constructor(isBot) {
     super();
@@ -36,6 +37,8 @@ class GameModel extends Model {
 
     this.notify(GameModel.SET_HOUSES, this.houses);
     this.houses.setHouses(state.houses);
+
+    this.notify(GameModel.SET_RESOURCES, state.resources);
 
     this.initBot();
   }

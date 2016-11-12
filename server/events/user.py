@@ -6,7 +6,8 @@ from emitter import send_back
 from game import create_person
 from game import pack_people
 from game import pack_houses
-from game import get_person 
+from game import get_person
+from game import pack_resources
 
 REGISTER_USER = 'register_user'
 GAME_STATE = 'game_state'
@@ -21,12 +22,13 @@ def on_register_user(user):
         'myself': person.pack(),
         'people': pack_people(),
         'houses': pack_houses(),
+        'resources': pack_resources(),
         'apiKey': flask_app.config.get('GOOGLE_MAPS_API_KEY')
     })
     send_to_everyone_else(ADD_PERSON, person.pack());
 
 @socketio.on(DISCONNECT)
 def on_disconnect():
-    person = get_person(request.sid) 
+    person = get_person(request.sid)
     person.deactivate()
     send_to_everyone_else(REMOVE_PERSON, person.id);
