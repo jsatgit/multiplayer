@@ -23,17 +23,16 @@ class GameView extends View {
         this.houses.subscribe(housesModel);
       },
       [GameModel.SET_RESOURCES]: resources => {
-        addResource('yellow', resources.oil);
-        addResource('orange', resources.natural_gas);
-        addResource('green', resources.phosphorus);
-        addResource('black', resources.coal);
+        addResources('yellow', resources.oil);
+        addResources('orange', resources.natural_gas);
+        addResources('green', resources.phosphorus);
+        addResources('black', resources.coal);
       }
     }
   }
 }
 
-function addResource(color, resources) {
-  resources.forEach(resource => {
+function addResource(resource, color) {
     Map.addMarker({
       position: resource.position,
       icon: {
@@ -43,7 +42,22 @@ function addResource(color, resources) {
         fillOpacity: 1,
         scale: 3
       },
+      content: `
+        <div>
+          <div>
+            ${resource.name}
+          </div>
+          <div>
+            ${resource.amount}
+          </div>
+        </div>
+      `
     });
+}
+
+function addResources(color, resources) {
+  resources.forEach(resource => {
+    addResource(resource, color)
   });
 }
 

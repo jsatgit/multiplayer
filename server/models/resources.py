@@ -15,14 +15,21 @@ def getRandPosition():
         'lng': COQUITLAM.get('lng') + diff_lng
     }
 
-def create(num):
-    return [{'position': getRandPosition()} for _ in xrange(num)]
+def create(num, name):
+    return [
+        {
+            'name': name,
+            'position': getRandPosition(),
+            'amount': 100
+        } 
+        for _ in xrange(num)
+    ]
 
 
 def create_all():
     return {
-        'oil': create(10),
-        'natural_gas': create(10),
-        'phosphorus': create(10),
-        'coal': create(10)
+        'oil': create(10, 'oil'),
+        'natural_gas': create(10, 'natural_gas'),
+        'phosphorus': create(10, 'phosphorus'),
+        'coal': create(10, 'coal')
     }
