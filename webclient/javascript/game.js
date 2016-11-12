@@ -9,6 +9,8 @@ import Form from './form'
 import Map from './map'
 import ClickMover from './controllers/clickMover'
 
+let isBot = false;
+
 /*
  * The game is the central object that communicates
  * between the view, server, and local gamestate
@@ -18,16 +20,14 @@ class Game {
     Pages.show(Form)
     Form.submit().then(formResults => {
       const host = formResults.host || 'localhost';
-      console.log(formResults)
+      isBot = formResults.isBot;
       return [formResults, Server.connect(host, '5000')];
     }).then(results => {
       const [formResults, _] = results;
       Pages.show(Map);
       addServerMapping();
       Server.registerUser(formResults);
-      if (formResults.isBot) {
-        // wait until the view has completed loading
-      } else {
+      if (!isBot) {
         addKeyMapping();
         ClickMover.enable();
       }
@@ -39,7 +39,7 @@ function addServerMapping() {
   Server.addMapping({
     [Server.GAME_STATE]: gameState => {
       const gameView = new GameView();
-      const gameModel = new GameModel();
+      const gameModel = new GameModel(isBot);
       gameView.subscribe(gameModel);
       gameModel.setState({
         myself: Person.unpack(gameState.myself),

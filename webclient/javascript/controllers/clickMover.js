@@ -16,7 +16,7 @@ class ClickMover {
 
   static start(targetPosition) {
     timeout = setTimeout(
-      () => recurseMove(targetPosition),
+      () => ClickMover.recurseMove(targetPosition),
       ClickMover.INTERVAL
     );
   }
@@ -27,31 +27,29 @@ class ClickMover {
       timeout = null;
     }
   }
+
+  static recurseMove(targetPosition) {
+    const my = People.directory[GameModel.my.id];
+    if (Person.isClose(my.position, targetPosition)) {
+      ClickMover.stop();
+    } else {
+      const step = Person.stepTowards(
+        my.position,
+        targetPosition
+      );
+      Server.move({ step: step });
+      ClickMover.start(targetPosition);
+    }
+  }
 }
 
 function addMapMapping() {
   Map.addMapping({
     [Map.CLICK]: targetPosition => {
       ClickMover.stop();
-      recurseMove(targetPosition);
+      ClickMover.recurseMove(targetPosition);
     }
   })
 }
-
-
-function recurseMove(targetPosition) {
-  const my = People.directory[GameModel.my.id];
-  if (Person.isClose(my.position, targetPosition)) {
-    ClickMover.stop();
-  } else {
-    const step = Person.stepTowards(
-      my.position,
-      targetPosition
-    );
-    Server.move({ step: step });
-    ClickMover.start(targetPosition);
-  }
-}
-
 
 export default ClickMover;

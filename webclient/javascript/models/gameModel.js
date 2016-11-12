@@ -2,6 +2,7 @@ import Model from './model'
 import People from './people'
 import Houses from './houses'
 import Server from '../server'
+import WalkerBot from '../walkerBot'
 
 let _myself = null;
 
@@ -10,8 +11,9 @@ class GameModel extends Model {
   static get SET_PEOPLE() { return 'add_people'; }
   static get SET_HOUSES() { return 'add_houses'; }
 
-  constructor() {
+  constructor(isBot) {
     super();
+    this.isBot = isBot;
     this.people = new People();
     this.houses = new Houses();
     this.addServerMapping();
@@ -34,6 +36,15 @@ class GameModel extends Model {
 
     this.notify(GameModel.SET_HOUSES, this.houses);
     this.houses.setHouses(state.houses);
+
+    this.initBot();
+  }
+
+  initBot() {
+    if(this.isBot) {
+      const bot = new WalkerBot();
+      bot.onGameLoaded();
+    }
   }
 
   step(direction) {

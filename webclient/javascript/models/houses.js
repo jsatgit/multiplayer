@@ -2,14 +2,19 @@ import Model from './model'
 import Server from '../server'
 import House from './house'
 
+const _houses = {};
+
 class Houses extends Model {
   constructor() {
     super();
-    this.houses = {};
     this.addServerMapping();
   }
 
   static get ADD_HOUSE() { return 'add_house'; }
+
+  static get directory() {
+    return _houses;
+  }
 
   setHouses(houses) {
     houses.forEach(house => {
@@ -19,10 +24,10 @@ class Houses extends Model {
 
   addHouse(house) {
     const houseModel = House.unpack(house);
-    if (this.houses[houseModel.owner]) {
-      this.houses[houseModel.owner].push(houseModel);
+    if (_houses[houseModel.owner]) {
+      _houses[houseModel.owner].push(houseModel);
     } else {
-      this.houses[houseModel.owner] = [houseModel];
+      _houses[houseModel.owner] = [houseModel];
     }
     this.notify(Houses.ADD_HOUSE, houseModel);
   }
@@ -36,8 +41,8 @@ class Houses extends Model {
   }
 
   removeHouses(owner) {
-    this.houses[owner].forEach(house => house.remove());
-    delete this.houses[owner];
+    _houses[owner].forEach(house => house.remove());
+    delete _houses[owner];
   }
 }
 
