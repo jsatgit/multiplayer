@@ -3,6 +3,12 @@ class Marker {
     this.options = options;
     this.marker = null;
     this.map = null;
+    this.infoWindow = null;
+    this.infoWindowStayOpen = false;
+
+    this.openInfoWindow = this.openInfoWindow.bind(this);
+    this.closeInfoWindow = this.closeInfoWindow.bind(this);
+    this.toggleInfoWindow = this.toggleInfoWindow.bind(this);
   }
 
   setMap(map) {
@@ -14,10 +20,10 @@ class Marker {
     this.marker = new google.maps.Marker({
       position: this.options.position,
       icon: this.options.icon,
-      map: this.map 
+      map: this.map
     });
     if (this.options.content) {
-      this.addContent();
+      this.renderContent();
     }
   }
 
@@ -31,13 +37,31 @@ class Marker {
     this.marker.setMap(null);
   }
 
-  addContent() {
-    const infowindow = createInfoWindow(this.options.content);
-    this.marker.addListener(
-      'mouseover',
-      () => infowindow.open(this.map, this.marker)
-    );
-    this.marker.addListener('mouseout', () => infowindow.close());
+  renderContent() {
+    this.infoWindow = createInfoWindow(this.options.content);
+    this.marker.addListener('mouseover', this.openInfoWindow);
+    this.marker.addListener('mouseout', this.closeInfoWindow);
+    this.marker.addListener('click', this.toggleInfoWindow);
+  }
+
+  openInfoWindow() {
+    this.infoWindow.open(this.map, this.marker)
+  }
+
+  closeInfoWindow() {
+    if (!this.infoWindowStayOpen) {
+      this.infoWindow.close();
+    }
+  }
+
+  toggleInfoWindow() {
+    if (this.infoWindowStayOpen) {
+      this.infoWindowStayOpen = false;
+      this.closeInfoWindow();
+    } else {
+      this.infoWindowStayOpen = true;
+      this.openInfoWindow();
+    }
   }
 }
 
