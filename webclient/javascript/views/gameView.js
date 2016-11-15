@@ -3,6 +3,7 @@ import GameModel from '../models/gameModel'
 import Map from '../map'
 import People from './people'
 import Houses from './houses'
+import ResourceInfoWindow from './infowindows/resourceInfoWindow'
 
 class GameView extends View {
   constructor() {
@@ -33,26 +34,17 @@ class GameView extends View {
 }
 
 function addResource(resource, color) {
-    Map.addMarker({
-      position: resource.position,
-      icon: {
-        path: 'M -2,0 0,-2 2,0 0,2 z',
-        strokeColor: color,
-        fillColor: color,
-        fillOpacity: 1,
-        scale: 3
-      },
-      content: `
-        <div>
-          <div>
-            ${resource.name}
-          </div>
-          <div>
-            ${resource.amount}
-          </div>
-        </div>
-      `
-    });
+  const marker = Map.addMarker({
+    position: resource.position,
+    icon: {
+      path: 'M -2,0 0,-2 2,0 0,2 z',
+      strokeColor: color,
+      fillColor: color,
+      fillOpacity: 1,
+      scale: 3
+    },
+    view: new ResourceInfoWindow(resource) 
+  });
 }
 
 function addResources(color, resources) {

@@ -5,10 +5,15 @@ class Marker {
     this.map = null;
     this.infoWindow = null;
     this.infoWindowStayOpen = false;
+    this.isFirstOpen = true;
 
     this.openInfoWindow = this.openInfoWindow.bind(this);
     this.closeInfoWindow = this.closeInfoWindow.bind(this);
     this.toggleInfoWindow = this.toggleInfoWindow.bind(this);
+  }
+
+  addButtonClickListener(buttonClickCallback) {
+    this.buttonClickCallback = buttonClickCallback;
   }
 
   setMap(map) {
@@ -22,7 +27,7 @@ class Marker {
       icon: this.options.icon,
       map: this.map
     });
-    if (this.options.content) {
+    if (this.options.view) {
       this.renderContent();
     }
   }
@@ -38,19 +43,32 @@ class Marker {
   }
 
   renderContent() {
-    this.infoWindow = createInfoWindow(this.options.content);
+    this.infoWindow = createInfoWindow(this.options.view.render());
     this.marker.addListener('mouseover', this.openInfoWindow);
     this.marker.addListener('mouseout', this.closeInfoWindow);
     this.marker.addListener('click', this.toggleInfoWindow);
   }
 
   openInfoWindow() {
-    this.infoWindow.open(this.map, this.marker)
+    this.infoWindow.open(this.map, this.marker);
+    if (this.isFirstOpen) {
+      this.onFirstOpen();
+      this.isFirstOpen = false;
+    }
   }
+
 
   closeInfoWindow() {
     if (!this.infoWindowStayOpen) {
       this.infoWindow.close();
+    }
+  }
+
+  onFirstOpen() {
+    if (this.options.view.onButtonClick) {
+      const view = this.options.view; 
+      const button = document.getElementById(view.buttonId);
+      button.addEventListener('click', view.onButtonClick.bind(view));
     }
   }
 

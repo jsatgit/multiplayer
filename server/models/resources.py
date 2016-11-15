@@ -1,4 +1,5 @@
 from random import uniform
+from collections import defaultdict
 
 COQUITLAM = {
     'lat': 49.2838,
@@ -15,13 +16,22 @@ def getRandPosition():
         'lng': COQUITLAM.get('lng') + diff_lng
     }
 
+id_counter = defaultdict(int)
+
+def generate_id(name):
+    generated_id = id_counter.get(name)
+    id_counter[name] += 1
+    return generated_id
+
+
 def create(num, name):
     return [
         {
+            'id': generate_id(name),
             'name': name,
             'position': getRandPosition(),
             'amount': 100
-        } 
+        }
         for _ in xrange(num)
     ]
 

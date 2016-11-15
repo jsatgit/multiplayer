@@ -1,6 +1,7 @@
 import View from './view'
 import PersonModel from '../models/person'
 import Map from '../map';
+import PersonInfoWindow from './infowindows/personInfoWindow'
 
 const PERSON_ICON = 'https://www.apec-econ.ca/system/style/images/icon-small-person.png'
 
@@ -10,17 +11,11 @@ class Person extends View {
     this.marker = null;
   }
 
-  render(personModel) {
-    const content = `
-      <div>
-        <div>${personModel.name}</div>
-        <div>Gold: $${personModel.gold}</div>
-      </div>
-    `;
+  render(person) {
     this.marker = Map.addMarker({
-      position: personModel.position,
+      position: person.position,
       icon: PERSON_ICON,
-      content: content
+      view: new PersonInfoWindow(person)
     });
   }
 
