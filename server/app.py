@@ -11,3 +11,4 @@ init_game()
 import events.user 
 import events.person
 import events.house
+import events.resource

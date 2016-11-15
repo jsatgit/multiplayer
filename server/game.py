@@ -49,3 +49,7 @@ def pack_houses():
 
 def pack_resources():
     return Game.resources
+
+def take_resource(name):
+    Game.resources[name] -= 1;
+    return Game.resources.get(name);
