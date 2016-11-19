@@ -24,6 +24,7 @@ class GameView extends View {
         this.houses.subscribe(housesModel);
       },
       [GameModel.SET_RESOURCES]: resources => {
+        console.log(resources)
         addResources('yellow', resources.oil);
         addResources('orange', resources.natural_gas);
         addResources('green', resources.phosphorus);
@@ -48,9 +49,9 @@ function addResource(resource, color) {
 }
 
 function addResources(color, resources) {
-  resources.forEach(resource => {
-    addResource(resource, color)
-  });
+  for (const resource_id in resources) {
+    addResource(resources[resource_id], color)
+  }
 }
 
 export default GameView;

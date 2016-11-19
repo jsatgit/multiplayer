@@ -12,6 +12,7 @@ class Server {
   static get DOWN() { return  'down'; }
   static get RIGHT() { return  'right'; }
   static get LEFT() { return  'left'; }
+  static get RESOURCE() { return  'resource'; }
 
   static connect(host, port) {
     return new Promise((resolve, reject) => {
@@ -41,6 +42,14 @@ class Server {
 
   static addHouse() {
     emit(Server.ADD_HOUSE);
+  }
+
+  static takeResource(resourceName, id) {
+    emit(Server.RESOURCE, {
+      action: 'take',
+      resource_name: resourceName,
+      resource_id: id
+    });
   }
 
 }

@@ -16,30 +16,73 @@ def getRandPosition():
         'lng': COQUITLAM.get('lng') + diff_lng
     }
 
-id_counter = defaultdict(int)
-
-def generate_id(name):
-    generated_id = id_counter.get(name)
-    id_counter[name] += 1
-    return generated_id
-
-
-def create(num, name):
-    return [
-        {
-            'id': generate_id(name),
-            'name': name,
+def create(num, ResourceClass):
+    ResourceClass.create()
+    for _ in xrange(num):
+        ResourceClass.insert({
             'position': getRandPosition(),
             'amount': 100
-        }
-        for _ in xrange(num)
-    ]
-
+        })
 
 def create_all():
-    return {
-        'oil': create(10, 'oil'),
-        'natural_gas': create(10, 'natural_gas'),
-        'phosphorus': create(10, 'phosphorus'),
-        'coal': create(10, 'coal')
-    }
+    create(10, Oil)
+    create(10, NaturalGas)
+    create(10, Phosphorus)
+    create(10, Coal)
+
+class Resource(object):
+    _rows = None
+    _id_counter = 0 
+    name = None
+
+    @classmethod
+    def create(cls):
+        cls._rows = {}
+
+    @classmethod
+    def get(cls, resource_id, attribute):
+        return cls._rows[resource_id][attribute]
+
+    @classmethod
+    def update(cls, resource_id, attribute, value):
+        cls._rows[resource_id][attribute] = value
+
+    @classmethod
+    def insert(cls, resource):
+        # TODO mutation alert
+        resource.update({
+            'id': cls._generate_id(),
+            'name': cls.name
+        })
+        cls._rows[resource.get('id')] = resource 
+
+    @classmethod
+    def rows(cls, ):
+        return cls._rows
+
+    @classmethod
+    def _generate_id(cls):
+        current_id = cls._id_counter
+        cls._id_counter += 1
+        return current_id
+
+
+class Oil(Resource):
+    name = 'oil'
+
+class NaturalGas(Resource):
+    name = 'natural_gas'
+
+class Phosphorus(Resource):
+    name = 'phosphorus'
+
+class Coal(Resource):
+    name = 'coal'
+
+# TODO consider metaclasses
+nameToResourceClass = {
+    'oil': Oil,
+    'natural_gas': NaturalGas,
+    'phosphorus': Phosphorus,
+    'coal': Coal
+}

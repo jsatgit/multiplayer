@@ -1,3 +1,5 @@
+import Server from '../../server';
+
 class ResourceInfoWindow {
   constructor(resource) {
     this.resource = resource;
@@ -24,6 +26,7 @@ class ResourceInfoWindow {
   }
 
   onButtonClick() {
+    Server.takeResource(this.resource.name, this.resource.id);
     const amountView = document.getElementById(this.amountId);
     amountView.innerHTML = this.resource.amount--;
   }

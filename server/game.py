@@ -8,11 +8,10 @@ class Game:
     house_id = 0
     people = []
     houses = []
-    resources = None
     sid_to_person = {}
 
 def init_game():
-    Game.resources = resources.create_all()
+    resources.create_all()
 
 def create_person(name, sid):
     person = Person(
@@ -48,8 +47,15 @@ def pack_houses():
     ]
 
 def pack_resources():
-    return Game.resources
+    return {
+        resource_name : ResourceClass.rows()
+        for resource_name, ResourceClass
+        in resources.nameToResourceClass.iteritems()
+    }
 
-def take_resource(name):
-    Game.resources[name] -= 1;
-    return Game.resources.get(name);
+def take_resource(name, resource_id):
+    ResourceClass = resources.nameToResourceClass.get(name)
+    amount = ResourceClass.get(resource_id, 'amount')
+    newAmount = amount - 1
+    ResourceClass.update(resource_id, 'amount', newAmount)
+    return newAmount
