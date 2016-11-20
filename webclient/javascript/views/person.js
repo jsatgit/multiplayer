@@ -27,7 +27,7 @@ class Person extends View {
       [PersonModel.REMOVE]: () => {
         this.marker.remove();
       }
-    }
+    };
   }
 }
 

@@ -27,8 +27,11 @@ class ResourceInfoWindow {
 
   onButtonClick() {
     Server.takeResource(this.resource.name, this.resource.id);
+  }
+
+  updateAmount(amount) {
     const amountView = document.getElementById(this.amountId);
-    amountView.innerHTML = this.resource.amount--;
+    amountView.innerHTML = amount;
   }
 }
 
