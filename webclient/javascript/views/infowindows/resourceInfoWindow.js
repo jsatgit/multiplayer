@@ -1,4 +1,8 @@
 import Server from '../../server';
+import Position from '../../position'
+import People from '../../models/people'
+import GameModel from '../../models/gameModel'
+import Mover from '../../controllers/mover'
 
 class ResourceInfoWindow {
   constructor(resource) {
@@ -26,6 +30,16 @@ class ResourceInfoWindow {
   }
 
   onButtonClick() {
+    const my = People.directory[GameModel.my.id];
+    if (isTooFar(my.position, this.resource.position)) {
+      Mover.moveTo(this.resource.position);
+      Mover.addNextStopListener(() => this.takeResource());
+    } else {
+      this.takeResource()
+    }
+  }
+
+  takeResource() {
     Server.takeResource(this.resource.name, this.resource.id);
   }
 
@@ -33,6 +47,10 @@ class ResourceInfoWindow {
     const amountView = document.getElementById(this.amountId);
     amountView.innerHTML = amount;
   }
+}
+
+function isTooFar(position1, position2) {
+  return Position.distance(position1, position2) >= 0.00009;
 }
 
 function generateId(resource) {

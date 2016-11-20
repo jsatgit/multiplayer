@@ -7,6 +7,7 @@ import Server from '../server'
 let timeout = null;
 const INTERVAL = 20;
 const stopListeners = [];
+let nextStopListeners = [];
 
 class Mover {
   static listenToClicks() {
@@ -17,37 +18,46 @@ class Mover {
     stopListeners.push(callback);
   }
 
+  static addNextStopListener(callback) {
+    nextStopListeners.push(callback);
+  }
+
   static stop() {
+    console.log('stop')
     if (timeout) {
       clearTimeout(timeout);
       timeout = null;
     }
     stopListeners.forEach(callback => callback());
+    nextStopListeners.forEach(callback => callback());
+    nextStopListeners = [];
   }
 
   static moveTo(targetPosition) {
-    const my = People.directory[GameModel.my.id];
-    if (Person.isClose(my.position, targetPosition)) {
+    if (timeout) {
       Mover.stop();
-    } else {
-      const step = Person.stepTowards(
-        my.position,
-        targetPosition
-      );
-      Server.move({ step: step });
-      recurseMoveTo(targetPosition);
     }
+    recurseMoveTo(targetPosition);
   }
 }
 
 function recurseMoveTo(targetPosition) {
-  timeout = setTimeout(() => Mover.moveTo(targetPosition), INTERVAL);
+  const my = People.directory[GameModel.my.id];
+  if (Person.isClose(my.position, targetPosition)) {
+    Mover.stop();
+  } else {
+    const step = Person.stepTowards(
+      my.position,
+      targetPosition
+    );
+    Server.move({ step: step });
+    timeout = setTimeout(() => recurseMoveTo(targetPosition), INTERVAL);
+  }
 }
 
 function addMapMapping() {
   Map.addMapping({
     [Map.CLICK]: targetPosition => {
-      Mover.stop();
       Mover.moveTo(targetPosition);
     }
   })
