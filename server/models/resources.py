@@ -40,12 +40,8 @@ class Resource(object):
         cls._rows = {}
 
     @classmethod
-    def get(cls, resource_id, attribute):
-        return cls._rows[resource_id][attribute]
-
-    @classmethod
-    def update(cls, resource_id, attribute, value):
-        cls._rows[resource_id][attribute] = value
+    def get(cls, resource_id):
+        return cls._rows[resource_id]
 
     @classmethod
     def insert(cls, resource):

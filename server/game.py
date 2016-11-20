@@ -53,9 +53,11 @@ def pack_resources():
         in resources.nameToResourceClass.iteritems()
     }
 
-def take_resource(name, resource_id):
-    ResourceClass = resources.nameToResourceClass.get(name)
-    amount = ResourceClass.get(resource_id, 'amount')
-    newAmount = amount - 1
-    ResourceClass.update(resource_id, 'amount', newAmount)
+def take_resource(resource):
+    newAmount = resource.get('amount') - 1
+    resource['amount'] = newAmount
     return newAmount
+
+def get_resource(name, resource_id):
+    ResourceClass = resources.nameToResourceClass.get(name)
+    return ResourceClass.get(resource_id)
