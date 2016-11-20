@@ -56,6 +56,9 @@ def pack_resources():
 def take_resource(resource):
     newAmount = resource.get('amount') - 1
     resource['amount'] = newAmount
+    if newAmount == 0:
+        ResourceClass = resources.nameToResourceClass.get(resource.get('name'))
+        ResourceClass.delete(resource.get('id'))
     return newAmount
 
 def get_resource(name, resource_id):

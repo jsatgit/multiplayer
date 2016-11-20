@@ -45,7 +45,9 @@ class ResourceInfoWindow {
 
   updateAmount(amount) {
     const amountView = document.getElementById(this.amountId);
-    amountView.innerHTML = amount;
+    if (amountView) {
+      amountView.innerHTML = amount;
+    }
   }
 }
 

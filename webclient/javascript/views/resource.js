@@ -29,6 +29,9 @@ class Resource extends View {
     return {
       [ResourceModel.UPDATE_AMOUNT]: amount => {
         this.infoWindow.updateAmount(amount);
+      },
+      [ResourceModel.REMOVE]: () => {
+        this.marker.remove();
       }
     };
   }

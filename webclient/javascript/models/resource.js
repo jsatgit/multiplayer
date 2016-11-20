@@ -10,6 +10,7 @@ class Resource extends Model {
   }
 
   static get UPDATE_AMOUNT() { return 'update_amount'; }
+  static get REMOVE() { return 'remove_resource'; }
 
   static unpack(resource) {
     return new Resource(
@@ -23,6 +24,10 @@ class Resource extends Model {
   updateAmount(amount) {
     this.amount = amount;
     this.notify(Resource.UPDATE_AMOUNT, amount);
+  }
+  
+  remove() {
+    this.notify(Resource.REMOVE);
   }
 }
 

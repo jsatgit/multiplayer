@@ -21,7 +21,7 @@ def create(num, ResourceClass):
     for _ in xrange(num):
         ResourceClass.insert({
             'position': getRandPosition(),
-            'amount': 100
+            'amount': 5
         })
 
 def create_all():
@@ -32,7 +32,7 @@ def create_all():
 
 class Resource(object):
     _rows = None
-    _id_counter = 0 
+    _id_counter = 0
     name = None
 
     @classmethod
@@ -50,7 +50,11 @@ class Resource(object):
             'id': cls._generate_id(),
             'name': cls.name
         })
-        cls._rows[resource.get('id')] = resource 
+        cls._rows[resource.get('id')] = resource
+
+    @classmethod
+    def delete(cls, resource_id):
+        del cls._rows[resource_id]
 
     @classmethod
     def rows(cls, ):

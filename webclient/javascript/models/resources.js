@@ -32,7 +32,13 @@ class Resources extends Model {
         const resource = _resources[resource_name][resource_id];
         switch(action) {
           case 'take':
-            resource.updateAmount(amount);
+            if (amount === 0) {
+              resource.remove();
+              delete _resources[resource_name][resource_id]
+            } else {
+              resource.updateAmount(amount);
+            }
+            break;
         }
       }
     });
