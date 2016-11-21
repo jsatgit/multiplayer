@@ -41,6 +41,11 @@ class People extends Model {
       },
       [Server.ADD_PERSON]: person => {
         this.addPerson(person);
+      },
+      [Server.RESOURCE]: response => {
+        const { person_id, resource_name, inventory_gain } = response;
+        const person = _people[person_id];
+        person.addToInventory({[resource_name]: inventory_gain})
       }
     });
   }

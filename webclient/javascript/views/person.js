@@ -9,13 +9,15 @@ class Person extends View {
   constructor() {
     super();
     this.marker = null;
+    this.infoWindow = null;
   }
 
   render(person) {
+    this.infoWindow = new PersonInfoWindow(person)
     this.marker = Map.addMarker({
       position: person.position,
       icon: PERSON_ICON,
-      view: new PersonInfoWindow(person)
+      view: this.infoWindow 
     });
   }
 
@@ -26,6 +28,9 @@ class Person extends View {
       },
       [PersonModel.REMOVE]: () => {
         this.marker.remove();
+      },
+      [PersonModel.UPDATE_INVENTORY]: () => {
+        this.infoWindow.updateInventory();
       }
     };
   }

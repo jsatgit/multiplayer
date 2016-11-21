@@ -23,7 +23,6 @@ class Mover {
   }
 
   static stop() {
-    console.log('stop')
     if (timeout) {
       clearTimeout(timeout);
       timeout = null;

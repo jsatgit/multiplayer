@@ -1,3 +1,6 @@
+from collections import defaultdict
+from math import sqrt
+
 class Person:
     STEP_SIZE = 0.00001
 
@@ -5,15 +8,15 @@ class Person:
         self.id = person_id
         self.name = name
         self.position = position
-        self.gold = 100
         self.active = True
+        self.inventory = defaultdict(int)
 
     def pack(self):
         return {
             'id': self.id,
             'name': self.name,
             'position': self.position,
-            'gold': self.gold
+            'inventory': self.inventory
         }
 
     def deactivate(self):
@@ -29,11 +32,30 @@ class Person:
             lng=step.get('lng')
         )
 
+    def canTakeResource(self, resource):
+        return close(self.position, resource.get('position'))
+
+    def addToInventory(self, items):
+        for name, value in items.iteritems():
+            self.inventory[name] += value
+
+
+
+
 def make_step(position, lat=0, lng=0):
     return {
         'lat': position.get('lat') + lat,
         'lng': position.get('lng') + lng,
     }
+
+def distance(position1, position2):
+    latDiff = position1.get('lat') - position2.get('lat')
+    lngDiff = position1.get('lng') - position2.get('lng')
+    return sqrt(latDiff*latDiff + lngDiff*lngDiff)
+
+def close(position1, position2):
+    return distance(position1, position2) < 0.00009
+
 
 _move_direction = {
     'up': lambda position: make_step(position, lat=Person.STEP_SIZE),

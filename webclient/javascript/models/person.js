@@ -2,15 +2,16 @@ import Model from './model'
 import Position from '../position'
 
 class Person extends Model {
-  constructor(id, name, position, gold) {
+  constructor(id, name, position, inventory) {
     super();
     this.id = id;
     this.name = name;
     this.position = position;
-    this.gold = gold;
+    this.inventory = inventory;
   }
 
   static get UPDATE_POSITION() { return 'update_position'; }
+  static get UPDATE_INVENTORY() { return 'update_inventory'; }
   static get REMOVE() { return 'remove'; }
   static get STEP_SIZE() { return 0.00001 }
 
@@ -19,7 +20,7 @@ class Person extends Model {
       person.id,
       person.name,
       person.position,
-      person.gold
+      person.inventory
     );
   }
 
@@ -30,6 +31,17 @@ class Person extends Model {
 
   remove() {
     this.notify(Person.REMOVE)
+  }
+
+  addToInventory(items) {
+    for (const name in items) {
+      if (this.inventory[name]) {
+        this.inventory[name] += items[name]
+      } else {
+        this.inventory[name] = 1
+      }
+    }
+    this.notify(Person.UPDATE_INVENTORY)
   }
 
   static stepTowards(initialPosition, finalPosition) {

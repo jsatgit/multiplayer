@@ -66,6 +66,13 @@ class Resource(object):
         cls._id_counter += 1
         return current_id
 
+def use_resource(resource):
+    newAmount = resource.get('amount') - 1
+    resource['amount'] = newAmount
+    if newAmount == 0:
+        ResourceClass = nameToResourceClass.get(resource.get('name'))
+        ResourceClass.delete(resource.get('id'))
+    return newAmount
 
 class Oil(Resource):
     name = 'oil'
