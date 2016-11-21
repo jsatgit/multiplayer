@@ -25,7 +25,7 @@ class Resource extends Model {
     this.amount = amount;
     this.notify(Resource.UPDATE_AMOUNT, amount);
   }
-  
+
   remove() {
     this.notify(Resource.REMOVE);
   }

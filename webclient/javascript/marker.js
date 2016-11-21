@@ -5,7 +5,6 @@ class Marker {
     this.map = null;
     this.infoWindow = null;
     this.infoWindowStayOpen = false;
-    this.isFirstOpen = true;
 
     this.openInfoWindow = this.openInfoWindow.bind(this);
     this.closeInfoWindow = this.closeInfoWindow.bind(this);
@@ -50,25 +49,18 @@ class Marker {
   }
 
   openInfoWindow() {
+    this.infoWindow.setContent(this.options.view.render());
     this.infoWindow.open(this.map, this.marker);
-    if (this.isFirstOpen) {
-      this.onFirstOpen();
-      this.isFirstOpen = false;
+    if (this.options.view.onButtonClick) {
+      const view = this.options.view;
+      const button = document.getElementById(view.buttonId);
+      button.addEventListener('click', view.onButtonClick.bind(view));
     }
   }
-
 
   closeInfoWindow() {
     if (!this.infoWindowStayOpen) {
       this.infoWindow.close();
-    }
-  }
-
-  onFirstOpen() {
-    if (this.options.view.onButtonClick) {
-      const view = this.options.view; 
-      const button = document.getElementById(view.buttonId);
-      button.addEventListener('click', view.onButtonClick.bind(view));
     }
   }
 

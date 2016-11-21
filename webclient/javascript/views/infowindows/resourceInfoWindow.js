@@ -43,10 +43,10 @@ class ResourceInfoWindow {
     Server.takeResource(this.resource.name, this.resource.id);
   }
 
-  updateAmount(amount) {
+  updateAmount() {
     const amountView = document.getElementById(this.amountId);
     if (amountView) {
-      amountView.innerHTML = amount;
+      amountView.innerHTML = this.resource.amount;
     }
   }
 }
