@@ -1,7 +1,7 @@
-import View from './view'
-import ResourceInfoWindow from './infowindows/resourceInfoWindow'
-import Map from '../map'
-import ResourceModel from '../models/resource'
+import View from './view';
+import ResourceInfoWindow from './infowindows/resourceInfoWindow';
+import Map from '../map';
+import ResourceModel from '../models/resource';
 
 class Resource extends View {
   constructor(color) {
@@ -11,7 +11,7 @@ class Resource extends View {
   }
 
   render(resource, color) {
-    this.infoWindow = new ResourceInfoWindow(resource)
+    this.infoWindow = new ResourceInfoWindow(resource);
     this.marker = Map.addMarker({
       position: resource.position,
       icon: {

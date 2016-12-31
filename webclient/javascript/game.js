@@ -1,13 +1,13 @@
 import Server from './server';
-import GameModel from './models/gameModel'
-import GameView from './views/gameView'
-import Houses from './models/houses'
-import Person from './models/person'
-import Keys from './controllers/keys'
-import Pages from './pages'
-import Form from './form'
-import Map from './map'
-import Mover from './controllers/mover'
+import GameModel from './models/gameModel';
+import GameView from './views/gameView';
+import Houses from './models/houses';
+import Person from './models/person';
+import Keys from './controllers/keys';
+import Pages from './pages';
+import Form from './form';
+import Map from './map';
+import Mover from './controllers/mover';
 
 let isBot = false;
 
@@ -17,7 +17,7 @@ let isBot = false;
  */
 class Game {
   start() {
-    Pages.show(Form)
+    Pages.show(Form);
     Form.submit().then(formResults => {
       const host = formResults.host || 'localhost';
       isBot = formResults.isBot;

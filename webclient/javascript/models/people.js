@@ -1,6 +1,6 @@
-import Person from './person'
-import Model from './model'
-import Server from '../server'
+import Person from './person';
+import Model from './model';
+import Server from '../server';
 
 const _people = {};
 
@@ -45,7 +45,7 @@ class People extends Model {
       [Server.RESOURCE]: response => {
         const { person_id, resource_name, inventory_gain } = response;
         const person = _people[person_id];
-        person.addToInventory({[resource_name]: inventory_gain})
+        person.addToInventory({[resource_name]: inventory_gain});
       }
     });
   }

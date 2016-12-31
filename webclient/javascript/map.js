@@ -1,6 +1,6 @@
 import loadGoogleMapsAPI from 'load-google-maps-api';
-import Page from './page'
-import Marker from './marker'
+import Page from './page';
+import Marker from './marker';
 
 let googleMap = null;
 let mapElement = document.getElementById('map');
@@ -40,7 +40,7 @@ class Map extends Page {
 
   static addMapping(mapping) {
     if (isReady()) {
-      addEventMapping(mapping)
+      addEventMapping(mapping);
     } else {
       eventMappings.push(mapping);
     }
@@ -53,7 +53,7 @@ class Map extends Page {
 
 const eventWrapper = {
   [Map.CLICK]: evt => evt.latLng.toJSON()
-}
+};
 
 function addEventMapping(mapping) {
   for (let evt in mapping) {
@@ -66,7 +66,7 @@ function addEventMapping(mapping) {
 
 function setEventMappings() {
   while (eventMappings.length) {
-    addEventMapping(eventMappings.pop())
+    addEventMapping(eventMappings.pop());
   }
 }
 

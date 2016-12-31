@@ -1,9 +1,9 @@
-import View from './view'
-import PersonModel from '../models/person'
+import View from './view';
+import PersonModel from '../models/person';
 import Map from '../map';
-import PersonInfoWindow from './infowindows/personInfoWindow'
+import PersonInfoWindow from './infowindows/personInfoWindow';
 
-const PERSON_ICON = 'https://www.apec-econ.ca/system/style/images/icon-small-person.png'
+const PERSON_ICON = 'https://www.apec-econ.ca/system/style/images/icon-small-person.png';
 
 class Person extends View {
   constructor() {
@@ -13,7 +13,7 @@ class Person extends View {
   }
 
   render(person) {
-    this.infoWindow = new PersonInfoWindow(person)
+    this.infoWindow = new PersonInfoWindow(person);
     this.marker = Map.addMarker({
       position: person.position,
       icon: PERSON_ICON,

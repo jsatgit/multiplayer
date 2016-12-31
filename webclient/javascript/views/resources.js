@@ -1,6 +1,6 @@
-import View from './view'
-import ResourcesModel from '../models/resources'
-import Resource from './resource'
+import View from './view';
+import ResourcesModel from '../models/resources';
+import Resource from './resource';
 
 const nameToColor = {
   'oil': 'yellow',
@@ -22,7 +22,7 @@ class Resources extends View {
         resource.subscribe(resourceModel);
         resource.render(resourceModel, color);
       }
-    }
+    };
   }
 }
 

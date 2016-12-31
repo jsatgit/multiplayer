@@ -1,8 +1,8 @@
-import Map from '../map'
-import People from '../models/people'
-import GameModel from '../models/gameModel'
-import Person from '../models/person'
-import Server from '../server'
+import Map from '../map';
+import People from '../models/people';
+import GameModel from '../models/gameModel';
+import Person from '../models/person';
+import Server from '../server';
 
 let timeout = null;
 const INTERVAL = 20;
@@ -59,7 +59,7 @@ function addMapMapping() {
     [Map.CLICK]: targetPosition => {
       Mover.moveTo(targetPosition);
     }
-  })
+  });
 }
 
 export default Mover;

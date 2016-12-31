@@ -1,6 +1,6 @@
-import View from './view'
-import Person from './person'
-import PeopleModel from '../models/people'
+import View from './view';
+import Person from './person';
+import PeopleModel from '../models/people';
 
 class People extends View {
   constructor() {
@@ -14,7 +14,7 @@ class People extends View {
         person.subscribe(personModel);
         person.render(personModel);
       }
-    }
+    };
   }
 }
 

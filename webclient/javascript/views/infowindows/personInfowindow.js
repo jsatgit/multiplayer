@@ -1,7 +1,7 @@
 class PersonInfoWindow {
   constructor(person) {
     this.person = person;
-    this.inventoryId = generateId(person)
+    this.inventoryId = generateId(person);
   }
 
   renderInventoryItem(name, value) {
@@ -37,7 +37,7 @@ class PersonInfoWindow {
 }
 
 function generateId(person) {
-  return `inventory-${person.id}`
+  return `inventory-${person.id}`;
 }
 
 

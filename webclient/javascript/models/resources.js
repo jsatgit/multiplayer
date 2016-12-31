@@ -1,6 +1,6 @@
-import Model from './model'
-import Server from '../server'
-import Resource from './resource'
+import Model from './model';
+import Server from '../server';
+import Resource from './resource';
 
 let _resources = {};
 
@@ -34,7 +34,7 @@ class Resources extends Model {
           case 'take':
             if (amount === 0) {
               resource.remove();
-              delete _resources[resource_name][resource_id]
+              delete _resources[resource_name][resource_id];
             } else {
               resource.updateAmount(amount);
             }
@@ -45,4 +45,4 @@ class Resources extends Model {
   }
 }
 
-export default Resources
+export default Resources;

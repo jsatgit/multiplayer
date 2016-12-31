@@ -1,4 +1,4 @@
-let currentPage = null
+let currentPage = null;
 
 class Pages {
   static show(page) {

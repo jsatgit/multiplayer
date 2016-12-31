@@ -1,6 +1,6 @@
-import Model from './model'
-import Server from '../server'
-import House from './house'
+import Model from './model';
+import Server from '../server';
+import House from './house';
 
 const _houses = {};
 

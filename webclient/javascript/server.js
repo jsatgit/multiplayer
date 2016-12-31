@@ -55,7 +55,7 @@ class Server {
 }
 
 function emit(evt, data) {
-  console.log(`[${evt}] => ${JSON.stringify(data)}`)
+  console.log(`[${evt}] => ${JSON.stringify(data)}`);
   if (data) {
     _socket.emit(evt, data);
   } else {

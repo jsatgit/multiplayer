@@ -1,6 +1,6 @@
-import Page from './page'
+import Page from './page';
 
-const ENTER_KEY = 13
+const ENTER_KEY = 13;
 
 const el = document.getElementById('form');
 
@@ -20,7 +20,7 @@ class Form extends Page {
             'name': nameInput.value,
             'host': hostInput.value,
             'isBot': botInput.checked
-          })
+          });
         }
       });
     });

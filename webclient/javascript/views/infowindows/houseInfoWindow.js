@@ -1,8 +1,8 @@
-import People from '../../models/people'
+import People from '../../models/people';
 
 class HouseInfoWindow {
   constructor(house) {
-    this.house = house
+    this.house = house;
   }
 
   render() {

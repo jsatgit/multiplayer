@@ -10,7 +10,7 @@ class Model {
   notify(eventName, data) {
     this.subscribers.forEach(subscriber => {
       subscriber.notify(eventName, data);
-    })
+    });
   }
 }
 

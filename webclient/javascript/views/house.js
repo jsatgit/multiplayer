@@ -1,10 +1,10 @@
-import View from './view'
-import HouseModel from '../models/house'
+import View from './view';
+import HouseModel from '../models/house';
 import Map from '../map';
 import Marker from '../marker';
-import HouseInfoWindow from './infowindows/houseInfoWindow'
+import HouseInfoWindow from './infowindows/houseInfoWindow';
 
-const HOUSE_ICON = 'http://findicons.com/files/icons/1672/mono/32/home.png'
+const HOUSE_ICON = 'http://findicons.com/files/icons/1672/mono/32/home.png';
 
 class House extends View {
   constructor() {
@@ -25,7 +25,7 @@ class House extends View {
       [HouseModel.REMOVE]: () => {
         this.marker.remove();
       }
-    }
+    };
   }
 }
 

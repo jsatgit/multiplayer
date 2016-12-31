@@ -1,9 +1,9 @@
-import Model from './model'
-import People from './people'
-import Houses from './houses'
-import Server from '../server'
-import WalkerBot from '../walkerBot'
-import Resources from './resources'
+import Model from './model';
+import People from './people';
+import Houses from './houses';
+import Server from '../server';
+import WalkerBot from '../walkerBot';
+import Resources from './resources';
 
 let _myself = null;
 
@@ -41,7 +41,7 @@ class GameModel extends Model {
     this.houses.setHouses(state.houses);
 
     this.notify(GameModel.SET_RESOURCES, this.resources);
-    this.resources.setResources(state.resources)
+    this.resources.setResources(state.resources);
 
     this.initBot();
   }

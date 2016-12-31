@@ -1,5 +1,5 @@
-import Model from './model'
-import Position from '../position'
+import Model from './model';
+import Position from '../position';
 
 class Person extends Model {
   constructor(id, name, position, inventory) {
@@ -13,7 +13,7 @@ class Person extends Model {
   static get UPDATE_POSITION() { return 'update_position'; }
   static get UPDATE_INVENTORY() { return 'update_inventory'; }
   static get REMOVE() { return 'remove'; }
-  static get STEP_SIZE() { return 0.00001 }
+  static get STEP_SIZE() { return 0.00001; }
 
   static unpack(person) {
     return new Person(
@@ -26,22 +26,22 @@ class Person extends Model {
 
   updatePosition(position) {
     this.position = position;
-    this.notify(Person.UPDATE_POSITION, position)
+    this.notify(Person.UPDATE_POSITION, position);
   }
 
   remove() {
-    this.notify(Person.REMOVE)
+    this.notify(Person.REMOVE);
   }
 
   addToInventory(items) {
     for (const name in items) {
       if (this.inventory[name]) {
-        this.inventory[name] += items[name]
+        this.inventory[name] += items[name];
       } else {
-        this.inventory[name] = 1
+        this.inventory[name] = 1;
       }
     }
-    this.notify(Person.UPDATE_INVENTORY)
+    this.notify(Person.UPDATE_INVENTORY);
   }
 
   static stepTowards(initialPosition, finalPosition) {
@@ -51,7 +51,7 @@ class Person extends Model {
     return {
       lat: Person.STEP_SIZE * latDiff / distance,
       lng: Person.STEP_SIZE * lngDiff / distance
-    }
+    };
   }
 
   static isClose(position1, position2) {

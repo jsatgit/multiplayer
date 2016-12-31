@@ -1,6 +1,6 @@
-import View from './view'
-import House from './house'
-import HousesModel from '../models/houses'
+import View from './view';
+import House from './house';
+import HousesModel from '../models/houses';
 
 class Houses extends View {
   constructor() {
@@ -14,7 +14,7 @@ class Houses extends View {
         house.subscribe(houseModel);
         house.render(houseModel);
       }
-    }
+    };
   }
 }
 

@@ -1,4 +1,4 @@
-import Model from './model'
+import Model from './model';
 
 class Resource extends Model {
   constructor(id, name, position, amount) {

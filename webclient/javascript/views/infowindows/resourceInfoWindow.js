@@ -1,8 +1,8 @@
 import Server from '../../server';
-import Position from '../../position'
-import People from '../../models/people'
-import GameModel from '../../models/gameModel'
-import Mover from '../../controllers/mover'
+import Position from '../../position';
+import People from '../../models/people';
+import GameModel from '../../models/gameModel';
+import Mover from '../../controllers/mover';
 
 class ResourceInfoWindow {
   constructor(resource) {
@@ -35,7 +35,7 @@ class ResourceInfoWindow {
       Mover.moveTo(this.resource.position);
       Mover.addNextStopListener(() => this.takeResource());
     } else {
-      this.takeResource()
+      this.takeResource();
     }
   }
 
@@ -56,7 +56,7 @@ function isTooFar(position1, position2) {
 }
 
 function generateId(resource) {
-  return `resource-${resource.name}-${resource.id}`
+  return `resource-${resource.name}-${resource.id}`;
 }
 
 export default ResourceInfoWindow;

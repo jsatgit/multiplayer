@@ -1,4 +1,4 @@
-import Model from './model'
+import Model from './model';
 
 class House extends Model {
   constructor(id, position, owner) {
@@ -19,7 +19,7 @@ class House extends Model {
   }
 
   remove() {
-    this.notify(House.REMOVE)
+    this.notify(House.REMOVE);
   }
 }
 

@@ -1,9 +1,9 @@
-import View from './view'
-import GameModel from '../models/gameModel'
-import Map from '../map'
-import People from './people'
-import Houses from './houses'
-import Resources from './resources'
+import View from './view';
+import GameModel from '../models/gameModel';
+import Map from '../map';
+import People from './people';
+import Houses from './houses';
+import Resources from './resources';
 
 class GameView extends View {
   constructor() {
@@ -27,7 +27,7 @@ class GameView extends View {
       [GameModel.SET_RESOURCES]: resourcesModel => {
         this.resources.subscribe(resourcesModel);
       }
-    }
+    };
   }
 }
 
