@@ -1,5 +1,5 @@
 module.exports = {
-  entry: ['babel-polyfill', './javascript/main.js'],
+  entry: ['./javascript/main.js'],
   output: {
     path: 'public',
     filename: './bundle.js'
@@ -8,8 +8,8 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        exclude: /(node_modules|bower_components|vendor)/,
-        loader: 'babel', // 'babel-loader' is also a valid name to reference
+        exclude: /(node_modules|vendor)/,
+        loader: 'babel-loader',
         query: {
           presets: ['es2015']
         }
