@@ -9,7 +9,14 @@ import {
 import GameModel from './models/gameModel';
 import GameView from './views/gameView';
 import Person from './models/person';
-import Keys from './controllers/keys';
+import {
+  UP as KEY_UP,
+  DOWN as KEY_DOWN,
+  RIGHT as KEY_RIGHT,
+  LEFT as KEY_LEFT,
+  SPACE as KEY_SPACE,
+  addMapping as keyAddMapping
+} from './controllers/keys';
 import Pages from './pages';
 import {getForm} from './form';
 import {getMap} from './map';
@@ -61,12 +68,12 @@ function addServerMapping() {
 }
 
 function addKeyMapping() {
-  Keys.addMapping({
-    [Keys.UP]:     () => move(SERVER_UP),
-    [Keys.DOWN]:   () => move(SERVER_DOWN),
-    [Keys.RIGHT]:  () => move(SERVER_RIGHT),
-    [Keys.LEFT]:   () => move(SERVER_LEFT),
-    [Keys.SPACE]:  getServer().addHouse 
+  keyAddMapping({
+    [KEY_UP]:     () => move(SERVER_UP),
+    [KEY_DOWN]:   () => move(SERVER_DOWN),
+    [KEY_RIGHT]:  () => move(SERVER_RIGHT),
+    [KEY_LEFT]:   () => move(SERVER_LEFT),
+    [KEY_SPACE]:  getServer().addHouse
   });
 }
 

@@ -1,15 +1,33 @@
-class Keys {
-  static get UP() { return 119; }
-  static get DOWN() { return 115; }
-  static get RIGHT() { return 100; }
-  static get LEFT() { return 97; }
-  static get SPACE() { return 32; }
+/**
+ * Key press up event
+ */
+export const UP = 119;
 
-  static addMapping(mapping) {
-    document.addEventListener('keypress', evt => {
-      mapping[evt.which]();
-    });
-  }
+/**
+ * Key press down event
+ */
+export const DOWN = 115;
+
+/**
+ * Key press right event
+ */
+export const RIGHT = 100;
+
+/**
+ * Key press left event
+ */
+export const LEFT = 97;
+
+/**
+ * Key press space event
+ */
+export const SPACE = 32;
+
+/**
+ * Add a mapping for key presses
+ */
+export function addMapping(mapping) {
+  document.addEventListener('keypress', evt => {
+    mapping[evt.which]();
+  });
 }
-
-export default Keys;
