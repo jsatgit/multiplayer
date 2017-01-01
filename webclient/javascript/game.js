@@ -1,7 +1,6 @@
 import Server from './server';
 import GameModel from './models/gameModel';
 import GameView from './views/gameView';
-import Houses from './models/houses';
 import Person from './models/person';
 import Keys from './controllers/keys';
 import Pages from './pages';

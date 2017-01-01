@@ -1,5 +1,5 @@
 import Bot from './bot';
-import Houses from './models/houses.js';
+import {getHouses} from './models/houses.js';
 import Mover from './controllers/mover';
 
 function randomItem(lst) {
@@ -28,11 +28,12 @@ class WalkerBot extends Bot {
 }
 
 function moveToRandomHouse() {
-  const owners = Object.keys(Houses.directory);
+  const houses = getHouses();
+  const owners = Object.keys(houses.directory);
   if (owners.length) {
     const randomOwner = randomItem(owners);
-    const houses = Houses.directory[randomOwner];
-    const house = randomItem(houses);
+    const directory = houses.directory[randomOwner];
+    const house = randomItem(directory);
     Mover.moveTo(house.position);
   }
 }

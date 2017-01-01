@@ -2,34 +2,28 @@ import Model from './model';
 import Server from '../server';
 import House from './house';
 
-const _houses = {};
+let houses = null;
 
+export const ADD_HOUSE = 'add_house';
+
+/**
+ * Representation of all the houses on the map
+ */
 class Houses extends Model {
   constructor() {
     super();
     this.addServerMapping();
-  }
-
-  static get ADD_HOUSE() { return 'add_house'; }
-
-  static get directory() {
-    return _houses;
-  }
-
-  setHouses(houses) {
-    houses.forEach(house => {
-      this.addHouse(house);
-    });
+    this._houses = {};
   }
 
   addHouse(house) {
     const houseModel = House.unpack(house);
-    if (_houses[houseModel.owner]) {
-      _houses[houseModel.owner].push(houseModel);
+    if (this._houses[houseModel.owner]) {
+      this._houses[houseModel.owner].push(houseModel);
     } else {
-      _houses[houseModel.owner] = [houseModel];
+      this._houses[houseModel.owner] = [houseModel];
     }
-    this.notify(Houses.ADD_HOUSE, houseModel);
+    this.notify(ADD_HOUSE, houseModel);
   }
 
   addServerMapping() {
@@ -40,10 +34,41 @@ class Houses extends Model {
     });
   }
 
+  /**
+   * Removes houses belonging to a person
+   * @param {Person} owner - person whose house/s to remove
+   */
   removeHouses(owner) {
-    _houses[owner].forEach(house => house.remove());
-    delete _houses[owner];
+    this._houses[owner].forEach(house => house.remove());
+    delete this._houses[owner];
   }
+
+  /**
+   * bulk add houses
+   * @param {House[]}
+   */
+  setHouses(houses) {
+    houses.forEach(house => {
+      this.addHouse(house);
+    });
+  }
+
+  /**
+   * internal storage of houses
+   * @returns {Object}
+   */
+  get directory() {
+    return this._houses;
+  }
+
 }
 
-export default Houses;
+/**
+ * Get global house object
+ */
+export function getHouses() {
+  if (!houses) {
+    houses = new Houses();
+  }
+  return houses;
+}

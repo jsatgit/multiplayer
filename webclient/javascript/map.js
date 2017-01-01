@@ -4,6 +4,10 @@ import Marker from './marker';
 
 let map = null;
 
+
+/**
+ * Fired when a user clicks on the map
+ */
 export const CLICK = 'click';
 
 const eventWrapper = {
