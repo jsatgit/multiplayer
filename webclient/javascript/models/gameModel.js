@@ -1,9 +1,9 @@
 import Model from './model';
 import {getPeople} from './people';
 import {getHouses} from './houses';
+import {getResources} from './resources';
 import Server from '../server';
 import WalkerBot from '../walkerBot';
-import Resources from './resources';
 
 let _myself = null;
 
@@ -16,7 +16,6 @@ class GameModel extends Model {
   constructor(isBot) {
     super();
     this.isBot = isBot;
-    this.resources = new Resources();
     this.addServerMapping();
   }
 
@@ -32,6 +31,7 @@ class GameModel extends Model {
       centerPosition: state.myself.position
     });
 
+    // TODO Clean up these collections (they share a lot of common code)
     const people = getPeople();
     this.notify(GameModel.SET_PEOPLE, people);
     people.setPeople(state.people);
@@ -40,8 +40,9 @@ class GameModel extends Model {
     this.notify(GameModel.SET_HOUSES, houses);
     houses.setHouses(state.houses);
 
-    this.notify(GameModel.SET_RESOURCES, this.resources);
-    this.resources.setResources(state.resources);
+    const resources = getResources();
+    this.notify(GameModel.SET_RESOURCES, resources);
+    resources.setResources(state.resources);
 
     this.initBot();
   }

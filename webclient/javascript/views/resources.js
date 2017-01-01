@@ -1,5 +1,5 @@
 import View from './view';
-import ResourcesModel from '../models/resources';
+import {ADD_RESOURCE} from '../models/resources';
 import Resource from './resource';
 
 const nameToColor = {
@@ -16,7 +16,7 @@ class Resources extends View {
 
   handler() {
     return {
-      [ResourcesModel.ADD_RESOURCE]: resourceModel => {
+      [ADD_RESOURCE]: resourceModel => {
         const color = nameToColor[resourceModel.name];
         const resource = new Resource();
         resource.subscribe(resourceModel);

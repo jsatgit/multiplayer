@@ -66,7 +66,7 @@ class Houses extends Model {
 }
 
 /**
- * Get global house object
+ * Get global houses object
  */
 export function getHouses() {
   if (!houses) {

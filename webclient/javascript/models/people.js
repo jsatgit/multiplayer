@@ -72,7 +72,7 @@ class People extends Model {
 }
 
 /**
- * Get global house object
+ * Get global people object
  */
 export function getPeople() {
   if (!people) {
