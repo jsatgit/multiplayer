@@ -1,6 +1,9 @@
 import Model from './model';
 import House from './house';
-import Server from '../server';
+import {
+  getServer,
+  ADD_HOUSE as SERVER_ADD_HOUSE
+} from '../server';
 
 let houses = null;
 
@@ -30,8 +33,8 @@ class Houses extends Model {
   }
 
   addServerMapping() {
-    Server.addMapping({
-      [Server.ADD_HOUSE]: house => {
+    getServer().addMapping({
+      [SERVER_ADD_HOUSE]: house => {
         this.addHouse(house);
       }
     });

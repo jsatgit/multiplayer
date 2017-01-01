@@ -1,5 +1,5 @@
 import Model from './model';
-import Server from '../server';
+import {getServer, RESOURCE} from '../server';
 import Resource from './resource';
 
 let resources = null; 
@@ -20,8 +20,8 @@ class Resources extends Model {
   }
 
   addServerMapping() {
-    Server.addMapping({
-      [Server.RESOURCE]: response => {
+    getServer().addMapping({
+      [RESOURCE]: response => {
         const { action, resource_name, resource_id, amount } = response;
         const resource = this._resources[resource_name][resource_id];
         switch(action) {

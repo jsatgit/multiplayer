@@ -2,7 +2,7 @@ import {getMap, CLICK} from '../map';
 import {getPeople} from '../models/people';
 import GameModel from '../models/gameModel';
 import Person from '../models/person';
-import Server from '../server';
+import {getServer} from '../server';
 
 let timeout = null;
 const INTERVAL = 20;
@@ -49,7 +49,7 @@ function recurseMoveTo(targetPosition) {
       my.position,
       targetPosition
     );
-    Server.move({ step: step });
+    getServer().move({ step: step });
     timeout = setTimeout(() => recurseMoveTo(targetPosition), INTERVAL);
   }
 }

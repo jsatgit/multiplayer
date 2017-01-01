@@ -1,6 +1,11 @@
 import Model from './model';
 import Person from './person';
-import Server from '../server';
+import {
+  getServer,
+  UPDATE_POSITION,
+  ADD_PERSON as SERVER_ADD_PERSON,
+  RESOURCE
+} from '../server';
 
 let people = null;
 
@@ -27,15 +32,15 @@ class People extends Model {
   }
 
   addServerMapping() {
-    Server.addMapping({
-      [Server.UPDATE_POSITION]: personUpdates => {
+    getServer().addMapping({
+      [UPDATE_POSITION]: personUpdates => {
         const person = this._people[personUpdates.id];
         person.updatePosition(personUpdates.position);
       },
-      [Server.ADD_PERSON]: person => {
+      [SERVER_ADD_PERSON]: person => {
         this.addPerson(person);
       },
-      [Server.RESOURCE]: response => {
+      [RESOURCE]: response => {
         const { person_id, resource_name, inventory_gain } = response;
         const person = this._people[person_id];
         person.addToInventory({[resource_name]: inventory_gain});

@@ -1,4 +1,4 @@
-import Server from '../../server';
+import {getServer} from '../../server';
 import Position from '../../position';
 import {getPeople} from '../../models/people';
 import GameModel from '../../models/gameModel';
@@ -40,7 +40,7 @@ class ResourceInfoWindow {
   }
 
   takeResource() {
-    Server.takeResource(this.resource.name, this.resource.id);
+    getServer().takeResource(this.resource.name, this.resource.id);
   }
 
   updateAmount() {

@@ -1,66 +1,110 @@
-let _socket;
+export const REGISTER_USER = 'register_user';
+export const GAME_STATE = 'game_state';
+export const MOVE = 'move';
+export const ADD_HOUSE = 'add_house';
+export const ADD_PERSON = 'add_person';
+export const REMOVE_PERSON = 'remove_person';
+export const UPDATE_POSITION = 'update_position';
+export const UP = 'up';
+export const DOWN = 'down';
+export const RIGHT = 'right';
+export const LEFT = 'left';
+export const RESOURCE = 'resource';
 
+let server = null;
+
+/**
+ * Manages socket communication between client and server
+ */
 class Server {
-  static get REGISTER_USER() { return 'register_user'; }
-  static get GAME_STATE() { return 'game_state'; }
-  static get MOVE() { return 'move'; }
-  static get ADD_HOUSE() { return  'add_house'; }
-  static get ADD_PERSON() { return  'add_person'; }
-  static get REMOVE_PERSON() { return  'remove_person'; }
-  static get UPDATE_POSITION() { return  'update_position'; }
-  static get UP() { return  'up'; }
-  static get DOWN() { return  'down'; }
-  static get RIGHT() { return  'right'; }
-  static get LEFT() { return  'left'; }
-  static get RESOURCE() { return  'resource'; }
+  contructor() {
+    this._socket = null;
+  }
 
-  static connect(host, port) {
+  emit(evt, data) {
+    console.log(`[${evt}] => ${JSON.stringify(data)}`);
+    if (data) {
+      this._socket.emit(evt, data);
+    } else {
+      this._socket.emit(evt);
+    }
+  }
+
+  /**
+   * Makes a websocket connection to the server
+   * @param {string} host - host ip address
+   * @param {string} port - host port number
+   */
+  connect(host, port) {
     return new Promise((resolve, reject) => {
       const address = `http://${host}:${port}`;
-      _socket = io.connect(address);
-      _socket.on('connect', () => {
+      this._socket = io.connect(address);
+      this._socket.on('connect', () => {
         resolve();
       });
     });
   }
 
-  static addMapping(mapping) {
+  /**
+   * Register listeners for server events
+   * @param {object} mapping - mapping of event name to callback
+   */
+  addMapping(mapping) {
     for (let evt in mapping) {
-      _socket.on(evt, response => {
+      this._socket.on(evt, response => {
         mapping[evt](response);
       });
     }
   }
 
-  static registerUser(options) {
-    emit(Server.REGISTER_USER, options);
+  /**
+   * Registers a user
+   * @param {Object} options
+   * @param {string} options.name - name of the user
+   * @param {string} options.host - ip address of the user
+   * @param {boolean} options.isBot - whether the user is a bot
+   */
+  registerUser(options) {
+    this.emit(REGISTER_USER, options);
   }
 
-  static move(options) {
-    emit(Server.MOVE, options);
+  /**
+   * Moves a person
+   * @param {Object} options
+   * @param {Object} options.step - position to step to
+   * @param {Object} options.direction - direction to move towards
+   */
+  move(options) {
+    getServer().emit(MOVE, options);
   }
 
-  static addHouse() {
-    emit(Server.ADD_HOUSE);
+  /**
+   * Adds a house
+   */
+  addHouse() {
+    getServer().emit(ADD_HOUSE);
   }
 
-  static takeResource(resourceName, id) {
-    emit(Server.RESOURCE, {
+  /**
+   * Consumes a resource
+   * @param {string} resourceName - name of the resource to take
+   * @param {number} id - id of the resource to take
+   */
+  takeResource(resourceName, id) {
+    getServer().emit(RESOURCE, {
       action: 'take',
       resource_name: resourceName,
       resource_id: id
     });
   }
-
 }
 
-function emit(evt, data) {
-  console.log(`[${evt}] => ${JSON.stringify(data)}`);
-  if (data) {
-    _socket.emit(evt, data);
-  } else {
-    _socket.emit(evt);
+/**
+ * Obtain global server object
+ */
+export function getServer() {
+  if (!server) {
+    server = new Server();
   }
+  return server;
 }
-
-export default Server;

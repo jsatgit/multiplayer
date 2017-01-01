@@ -2,7 +2,7 @@ import Model from './model';
 import {getPeople} from './people';
 import {getHouses} from './houses';
 import {getResources} from './resources';
-import Server from '../server';
+import {getServer, REMOVE_PERSON} from '../server';
 import WalkerBot from '../walkerBot';
 
 let _myself = null;
@@ -55,8 +55,8 @@ class GameModel extends Model {
   }
 
   addServerMapping() {
-    Server.addMapping({
-      [Server.REMOVE_PERSON]: personId => {
+    getServer().addMapping({
+      [REMOVE_PERSON]: personId => {
         getPeople().removePerson(personId);
         getHouses().removeHouses(personId);
       }
