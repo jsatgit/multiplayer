@@ -1,6 +1,6 @@
 import Server from '../../server';
 import Position from '../../position';
-import People from '../../models/people';
+import {getPeople} from '../../models/people';
 import GameModel from '../../models/gameModel';
 import Mover from '../../controllers/mover';
 
@@ -30,7 +30,7 @@ class ResourceInfoWindow {
   }
 
   onButtonClick() {
-    const my = People.directory[GameModel.my.id];
+    const my = getPeople().directory[GameModel.my.id];
     if (isTooFar(my.position, this.resource.position)) {
       Mover.moveTo(this.resource.position);
       Mover.addNextStopListener(() => this.takeResource());

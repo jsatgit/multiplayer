@@ -1,5 +1,5 @@
 import {getMap, CLICK} from '../map';
-import People from '../models/people';
+import {getPeople} from '../models/people';
 import GameModel from '../models/gameModel';
 import Person from '../models/person';
 import Server from '../server';
@@ -41,7 +41,7 @@ class Mover {
 }
 
 function recurseMoveTo(targetPosition) {
-  const my = People.directory[GameModel.my.id];
+  const my = getPeople().directory[GameModel.my.id];
   if (Person.isClose(my.position, targetPosition)) {
     Mover.stop();
   } else {

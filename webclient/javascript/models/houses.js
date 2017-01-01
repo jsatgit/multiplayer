@@ -1,9 +1,12 @@
 import Model from './model';
-import Server from '../server';
 import House from './house';
+import Server from '../server';
 
 let houses = null;
 
+/**
+ * Triggered when a house model is added
+ */
 export const ADD_HOUSE = 'add_house';
 
 /**
@@ -60,7 +63,6 @@ class Houses extends Model {
   get directory() {
     return this._houses;
   }
-
 }
 
 /**

@@ -1,6 +1,6 @@
 import View from './view';
 import Person from './person';
-import PeopleModel from '../models/people';
+import {ADD_PERSON} from '../models/people';
 
 class People extends View {
   constructor() {
@@ -9,7 +9,7 @@ class People extends View {
 
   handler() {
     return {
-      [PeopleModel.ADD_PERSON]: personModel => {
+      [ADD_PERSON]: personModel => {
         const person = new Person();
         person.subscribe(personModel);
         person.render(personModel);

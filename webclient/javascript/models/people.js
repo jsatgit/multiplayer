@@ -1,42 +1,35 @@
-import Person from './person';
 import Model from './model';
+import Person from './person';
 import Server from '../server';
 
-const _people = {};
+let people = null;
 
+/**
+ * Triggered when a person model is added
+ */
+export const ADD_PERSON = 'add_person';
+
+/**
+ * Representation of all the people on the map
+ */
 class People extends Model {
   constructor() {
     super();
     this.addServerMapping();
+    this._people = {};
   }
 
-  static get ADD_PERSON() { return 'add_person'; }
-
-  static get directory() {
-    return _people;
-  }
-
-  setPeople(people) {
-    people.forEach(person => {
-      this.addPerson(person);
-    });
-  }
 
   addPerson(person) {
     const personModel = Person.unpack(person);
-    _people[personModel.id] = personModel;
-    this.notify(People.ADD_PERSON, personModel);
-  }
-
-  removePerson(personId) {
-    _people[personId].remove();
-    delete _people[personId];
+    this._people[personModel.id] = personModel;
+    this.notify(ADD_PERSON, personModel);
   }
 
   addServerMapping() {
     Server.addMapping({
       [Server.UPDATE_POSITION]: personUpdates => {
-        const person = _people[personUpdates.id];
+        const person = this._people[personUpdates.id];
         person.updatePosition(personUpdates.position);
       },
       [Server.ADD_PERSON]: person => {
@@ -44,11 +37,46 @@ class People extends Model {
       },
       [Server.RESOURCE]: response => {
         const { person_id, resource_name, inventory_gain } = response;
-        const person = _people[person_id];
+        const person = this._people[person_id];
         person.addToInventory({[resource_name]: inventory_gain});
       }
     });
   }
+
+  /**
+   * Removes person given an id
+   * @param {number} personId - id of a person
+   */
+  removePerson(personId) {
+    this._people[personId].remove();
+    delete this._people[personId];
+  }
+
+  /**
+   * bulk add people
+   * @param {Person[]}
+   */
+  setPeople(people) {
+    people.forEach(person => {
+      this.addPerson(person);
+    });
+  }
+
+  /**
+   * internal storage of people
+   * @returns {Object}
+   */
+  get directory() {
+    return this._people;
+  }
 }
 
-export default People;
+/**
+ * Get global house object
+ */
+export function getPeople() {
+  if (!people) {
+    people = new People();
+  }
+  return people;
+}

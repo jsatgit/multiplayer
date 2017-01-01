@@ -1,4 +1,4 @@
-import People from '../../models/people';
+import {getPeople} from '../../models/people';
 
 class HouseInfoWindow {
   constructor(house) {
@@ -6,7 +6,7 @@ class HouseInfoWindow {
   }
 
   render() {
-    const ownerName = People.directory[this.house.owner].name;
+    const ownerName = getPeople().directory[this.house.owner].name;
     return `
       <div>
         ${ownerName}'s house

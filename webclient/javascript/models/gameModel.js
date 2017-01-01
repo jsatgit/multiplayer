@@ -1,5 +1,5 @@
 import Model from './model';
-import People from './people';
+import {getPeople} from './people';
 import {getHouses} from './houses';
 import Server from '../server';
 import WalkerBot from '../walkerBot';
@@ -16,7 +16,6 @@ class GameModel extends Model {
   constructor(isBot) {
     super();
     this.isBot = isBot;
-    this.people = new People();
     this.resources = new Resources();
     this.addServerMapping();
   }
@@ -33,10 +32,11 @@ class GameModel extends Model {
       centerPosition: state.myself.position
     });
 
-    this.notify(GameModel.SET_PEOPLE, this.people);
-    this.people.setPeople(state.people);
+    const people = getPeople();
+    this.notify(GameModel.SET_PEOPLE, people);
+    people.setPeople(state.people);
 
-    const houses = getHouses(); 
+    const houses = getHouses();
     this.notify(GameModel.SET_HOUSES, houses);
     houses.setHouses(state.houses);
 
@@ -53,14 +53,10 @@ class GameModel extends Model {
     }
   }
 
-  step(direction) {
-    this.people.step(_myself, direction);
-  }
-
   addServerMapping() {
     Server.addMapping({
       [Server.REMOVE_PERSON]: personId => {
-        this.people.removePerson(personId);
+        getPeople().removePerson(personId);
         getHouses().removeHouses(personId);
       }
     });
