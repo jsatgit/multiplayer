@@ -1,4 +1,4 @@
-import Map from '../map';
+import {getMap, CLICK} from '../map';
 import People from '../models/people';
 import GameModel from '../models/gameModel';
 import Person from '../models/person';
@@ -55,8 +55,8 @@ function recurseMoveTo(targetPosition) {
 }
 
 function addMapMapping() {
-  Map.addMapping({
-    [Map.CLICK]: targetPosition => {
+  getMap().addMapping({
+    [CLICK]: targetPosition => {
       Mover.moveTo(targetPosition);
     }
   });

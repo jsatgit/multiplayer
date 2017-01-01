@@ -2,76 +2,110 @@ import loadGoogleMapsAPI from 'load-google-maps-api';
 import Page from './page';
 import Marker from './marker';
 
-let googleMap = null;
-let mapElement = document.getElementById('map');
-let mapPromise = null;
-let eventMappings = [];
+let map = null;
+
+export const CLICK = 'click';
+
+const eventWrapper = {
+  [CLICK]: evt => evt.latLng.toJSON()
+};
 
 /**
- * Interface with google maps api
+ * The map view containing the google maps
+ * @extends Page
  */
 class Map extends Page {
-  static get CLICK() {return 'click';}
-
-  static addMarker(markerOptions) {
-    const marker = new Marker(markerOptions);
-    if (isReady()) {
-      marker.setMap(googleMap);
-    } else {
-      mapPromise.then(() => marker.setMap(googleMap));
-    }
-    return marker;
+  constructor() {
+    super();
+    this.googleMap = null;
+    this.eventMappings = [];
+    this.mapElement = document.getElementById('map');
+    this.mapPromise = null;
   }
 
-  static load(mapInfo) {
-    mapPromise = new Promise((resolve, reject) => {
+  isReady() {
+    return this.googleMap;
+  }
+
+  addEventMapping(mapping) {
+    for (let evt in mapping) {
+      this.googleMap.addListener(evt, e => {
+        const wrappedEvent = eventWrapper[evt](e);
+        mapping[evt](wrappedEvent);
+      });
+    }
+  }
+
+  setEventMappings() {
+    while (this.eventMappings.length) {
+      this.addEventMapping(this.eventMappings.pop());
+    }
+  }
+
+  get element() {
+    return this.mapElement;
+  }
+
+  /**
+   * Load google maps given config by calling Google Maps API
+   * @param {Object} mapInfo - configuration for google maps
+   * @param {string} mapInfo.apiKey - google Maps API key
+   * @param {Object} mapInfo.centerPosition - coordinates of the center of the map
+   */
+  load(mapInfo) {
+    this.mapPromise = new Promise((resolve, reject) => {
       loadGoogleMapsAPI({
         key: mapInfo.apiKey
       }).then(maps => {
-        googleMap = new google.maps.Map(mapElement, {
+        this.googleMap = new google.maps.Map(this.mapElement, {
           center: mapInfo.centerPosition,
           zoom: 18
         });
-        setEventMappings();
+        this.setEventMappings();
         resolve();
       });
     });
   }
 
-  static addMapping(mapping) {
-    if (isReady()) {
-      addEventMapping(mapping);
+  /**
+   * Add an event mapping
+   * @param {Object} mapping - mapping from event name to callback function
+   */
+  addMapping(mapping) {
+    if (this.isReady()) {
+      this.addEventMapping(mapping);
     } else {
-      eventMappings.push(mapping);
+      this.eventMappings.push(mapping);
     }
   }
 
-  static get element() {
-    return mapElement;
+  /**
+   * Add a marker to the map
+   * @param {Object} markerOptions
+   * @param {Object} position - coordinates where the marker is placd
+   * @param {String} icon - url of the asset that visually represents the marker
+   * @param {InfoWindow} view - the view that is rendered when the marker is hovered or clicked
+   * @returns {Marker} the marker object that was created
+   */
+  addMarker(markerOptions) {
+    const marker = new Marker(markerOptions);
+    if (this.isReady()) {
+      marker.setMap(this.googleMap);
+    } else {
+      this.mapPromise.then(() => marker.setMap(this.googleMap));
+    }
+    return marker;
   }
+
 }
 
-const eventWrapper = {
-  [Map.CLICK]: evt => evt.latLng.toJSON()
-};
-
-function addEventMapping(mapping) {
-  for (let evt in mapping) {
-    googleMap.addListener(evt, e => {
-      const wrappedEvent = eventWrapper[evt](e);
-      mapping[evt](wrappedEvent);
-    });
+/**
+ * retrieves the global map object
+ * @returns {Map}
+ */
+export function getMap() {
+  if (!map) {
+    map = new Map();
   }
+  return map;
 }
-
-function setEventMappings() {
-  while (eventMappings.length) {
-    addEventMapping(eventMappings.pop());
-  }
-}
-
-function isReady() {
-  return googleMap;
-}
-
-export default Map;

@@ -2,19 +2,30 @@ import Page from './page';
 
 const ENTER_KEY = 13;
 
-const el = document.getElementById('form');
+let form = null;
 
+/**
+ * Form for user registration 
+ */
 class Form extends Page {
-  static get element() {
-    return el;
+  constructor() {
+    super();
+    this.el = document.getElementById('form');
   }
 
-  static submit() {
+  get element() {
+    return this.el;
+  }
+
+  /**
+   * submit user input form
+   */
+  submit() {
     return new Promise(resolve => {
       const nameInput = document.getElementById('name');
       const hostInput = document.getElementById('host');
       const botInput = document.getElementById('bot');
-      el.addEventListener('keyup', evt => {
+      this.el.addEventListener('keyup', evt => {
         if (evt.which == ENTER_KEY) {
           resolve({
             'name': nameInput.value,
@@ -27,4 +38,12 @@ class Form extends Page {
   }
 }
 
-export default Form;
+/**
+ * Returns global form object 
+ */
+export function getForm() {
+  if (!form) {
+    form = new Form();
+  }
+  return form;
+}

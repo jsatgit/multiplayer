@@ -1,9 +1,9 @@
 class Page {
-  static show() {
+  show() {
     this.element.style.display = 'block';
   }
 
-  static hide() {
+  hide() {
     this.element.style.display = 'none';
   }
 }

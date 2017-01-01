@@ -1,6 +1,6 @@
 import View from './view';
 import HouseModel from '../models/house';
-import Map from '../map';
+import {getMap} from '../map';
 import Marker from '../marker';
 import HouseInfoWindow from './infowindows/houseInfoWindow';
 
@@ -13,7 +13,7 @@ class House extends View {
   }
 
   render(house) {
-    this.marker = Map.addMarker({
+    this.marker = getMap().addMarker({
       position: house.position,
       icon: HOUSE_ICON,
       view: new HouseInfoWindow(house)

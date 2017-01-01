@@ -1,6 +1,6 @@
 import View from './view';
 import ResourceInfoWindow from './infowindows/resourceInfoWindow';
-import Map from '../map';
+import {getMap} from '../map';
 import ResourceModel from '../models/resource';
 
 class Resource extends View {
@@ -12,7 +12,7 @@ class Resource extends View {
 
   render(resource, color) {
     this.infoWindow = new ResourceInfoWindow(resource);
-    this.marker = Map.addMarker({
+    this.marker = getMap().addMarker({
       position: resource.position,
       icon: {
         path: 'M -2,0 0,-2 2,0 0,2 z',

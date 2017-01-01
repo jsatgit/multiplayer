@@ -4,6 +4,7 @@ module.exports = {
     path: 'public',
     filename: './bundle.js'
   },
+  devtool: 'source-map',
   module: {
     preLoaders: [
       {

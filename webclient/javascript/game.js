@@ -5,8 +5,8 @@ import Houses from './models/houses';
 import Person from './models/person';
 import Keys from './controllers/keys';
 import Pages from './pages';
-import Form from './form';
-import Map from './map';
+import {getForm} from './form';
+import {getMap} from './map';
 import Mover from './controllers/mover';
 
 let isBot = false;
@@ -17,14 +17,15 @@ let isBot = false;
  */
 class Game {
   start() {
-    Pages.show(Form);
-    Form.submit().then(formResults => {
+    const form = getForm();
+    Pages.show(form);
+    form.submit().then(formResults => {
       const host = formResults.host || 'localhost';
       isBot = formResults.isBot;
       return [formResults, Server.connect(host, '5000')];
     }).then(results => {
       const [formResults, _] = results;
-      Pages.show(Map);
+      Pages.show(getMap());
       addServerMapping();
       Server.registerUser(formResults);
       if (!isBot) {

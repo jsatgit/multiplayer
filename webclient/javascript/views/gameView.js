@@ -1,6 +1,6 @@
 import View from './view';
 import GameModel from '../models/gameModel';
-import Map from '../map';
+import {getMap} from '../map';
 import People from './people';
 import Houses from './houses';
 import Resources from './resources';
@@ -16,7 +16,7 @@ class GameView extends View {
   handler() {
     return {
       [GameModel.SET_MAP_INFO]: mapInfo => {
-        Map.load(mapInfo);
+        getMap().load(mapInfo);
       },
       [GameModel.SET_PEOPLE]: peopleModel => {
         this.people.subscribe(peopleModel);
