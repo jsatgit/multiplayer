@@ -1,14 +1,61 @@
+/**
+ * event to register user
+ */
 export const REGISTER_USER = 'register_user';
+
+/**
+ * event to receive game state after registering user
+ */
 export const GAME_STATE = 'game_state';
+
+/**
+ * event to move a person
+ */
 export const MOVE = 'move';
+
+/**
+ * event to add a house
+ */
 export const ADD_HOUSE = 'add_house';
+
+/**
+ * event to add a person
+ */
 export const ADD_PERSON = 'add_person';
+
+/**
+ * event to remove a person
+ */
 export const REMOVE_PERSON = 'remove_person';
+
+/**
+ * event to update a resource
+ */
 export const UPDATE_POSITION = 'update_position';
+
+/**
+ * direction up for the MOVE event
+ */
 export const UP = 'up';
+
+/**
+ * direction down for the MOVE event
+ */
 export const DOWN = 'down';
+
+/**
+ * direction right for the MOVE event
+ */
 export const RIGHT = 'right';
+
+/**
+ * direction left for the MOVE event
+ */
 export const LEFT = 'left';
+
+/**
+ * event for updating a resource
+ */
 export const RESOURCE = 'resource';
 
 let server = null;
