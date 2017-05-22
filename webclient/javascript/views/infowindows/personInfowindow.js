@@ -1,11 +1,13 @@
 import {getServer} from '../../server';
+import GameModel from '../../models/gameModel';
 
 class PersonInfoWindow {
   constructor(person) {
     this.person = person;
     this.inventoryId = generateId('inventory', person);
-    this.buttonId = 'trade-button';
-    this.tradeAreaId = generateId('trade-area', person);
+    this.tradeContainerId = generateId('trade-container', person);
+    this.tradeAreaId = 'trade-area';
+    this.tradeButtonId = 'trade-button';
   }
 
   renderInventoryItem(name, value) {
@@ -30,11 +32,19 @@ class PersonInfoWindow {
     }
   }
 
-  onButtonClick() {
-    const tradeArea = document.getElementById(this.tradeAreaId);
-    console.log('making trade: ', tradeArea.value);
-    const tradeDetails = JSON.parse(tradeArea.value);
-    getServer().trade(tradeDetails.to, tradeDetails.items);
+  onRendered() {
+    this.initTradeButton();
+    this.initTradeArea();
+  }
+
+  initTradeButton() {
+    console.log(this.tradeButtonId);
+    const button = document.getElementById(this.tradeButtonId);
+    button.addEventListener('click', evt => {
+      const tradeArea = document.getElementById(this.tradeAreaId);
+      const tradeDetails = JSON.parse(tradeArea.value);
+      getServer().trade(tradeDetails.to, tradeDetails.items);
+    });
   }
 
   initTradeArea() {
@@ -44,16 +54,28 @@ class PersonInfoWindow {
     });
   }
 
+  renderTradeContainer() {
+    if (this.person.id != GameModel.my.id) {
+      return '';
+    }
+
+    return `
+      <div id=\'${this.tradeContainerId}\'>
+        <textarea id=\'${this.tradeAreaId}\' class="trade-area" rows="8" cols="30"></textarea>
+        <div>
+          <button id=\'${this.tradeButtonId}\'>
+            Trade
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
   render() {
     return `
       <div>
         <div>${this.person.name}</div>
-        <textarea id=\'${this.tradeAreaId}\' class="trade-area" rows="8" cols="30"></textarea>
-        <div>
-          <button id=\'${this.buttonId}\'>
-            Trade
-          </button>
-        </div>
+        ${this.renderTradeContainer()}
         <div id=\'${this.inventoryId}\'>${this.renderInventory()}</div>
       </div>
     `;

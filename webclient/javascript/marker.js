@@ -51,14 +51,10 @@ class Marker {
   openInfoWindow() {
     this.infoWindow.setContent(this.options.view.render());
     this.infoWindow.open(this.map, this.marker);
-    if (this.options.view.onButtonClick) {
-      const view = this.options.view;
-      const button = document.getElementById(view.buttonId);
-      button.addEventListener('click', view.onButtonClick.bind(view));
-    }
 
-    if (this.options.view.tradeAreaId) {
-      this.options.view.initTradeArea();
+    if (this.options.view.onRendered) {
+      //this.options.view.onRendered.call(this.options.view);
+      this.options.view.onRendered();
     }
   }
 

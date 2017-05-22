@@ -29,6 +29,11 @@ class ResourceInfoWindow {
     `;
   }
 
+  onRendered() {
+      const button = document.getElementById(this.buttonId);
+      button.addEventListener('click', this.onButtonClick.bind(this));
+  }
+
   onButtonClick() {
     const my = getPeople().directory[GameModel.my.id];
     if (isTooFar(my.position, this.resource.position)) {
