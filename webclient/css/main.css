@@ -12,3 +12,7 @@ html, body {
 .gm-style-iw + div {
   display: none;
 }
+
+.trade-area {
+  resize: none;
+}

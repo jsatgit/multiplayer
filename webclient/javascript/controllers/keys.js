@@ -28,6 +28,10 @@ export const SPACE = 32;
  */
 export function addMapping(mapping) {
   document.addEventListener('keypress', evt => {
-    mapping[evt.which]();
+    try {
+      mapping[evt.which]();
+    } catch (e) {
+      console.warn('not a command');
+    }
   });
 }

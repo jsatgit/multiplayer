@@ -1,7 +1,9 @@
 class PersonInfoWindow {
   constructor(person) {
     this.person = person;
-    this.inventoryId = generateId(person);
+    this.inventoryId = generateId('inventory', person);
+    this.buttonId = 'trade-button';
+    this.tradeAreaId = generateId('trade-area', person);
   }
 
   renderInventoryItem(name, value) {
@@ -9,7 +11,7 @@ class PersonInfoWindow {
   }
 
   renderInventory() {
-    let renderedInventory = '';
+    let renderedInventory = '<div>Inventory</div>';
     const inventory = this.person.inventory;
     for (const itemName in inventory) {
       renderedInventory += this.renderInventoryItem(
@@ -26,18 +28,36 @@ class PersonInfoWindow {
     }
   }
 
+  onButtonClick() {
+    const tradeArea = document.getElementById(this.tradeAreaId);
+    console.log('making trade: ', tradeArea.value);
+  }
+
+  initTradeArea() {
+    const tradeArea = document.getElementById(this.tradeAreaId);
+    tradeArea.addEventListener('keypress', evt => {
+      evt.stopPropagation();
+    });
+  }
+
   render() {
     return `
       <div>
         <div>${this.person.name}</div>
+        <textarea id=\'${this.tradeAreaId}\' class="trade-area" rows="8" cols="30"></textarea>
+        <div>
+          <button id=\'${this.buttonId}\'>
+            Trade
+          </button>
+        </div>
         <div id=\'${this.inventoryId}\'>${this.renderInventory()}</div>
       </div>
     `;
   }
 }
 
-function generateId(person) {
-  return `inventory-${person.id}`;
+function generateId(type, person) {
+  return `${type}-${person.id}`;
 }
 
 

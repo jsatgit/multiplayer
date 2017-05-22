@@ -56,6 +56,10 @@ class Marker {
       const button = document.getElementById(view.buttonId);
       button.addEventListener('click', view.onButtonClick.bind(view));
     }
+
+    if (this.options.view.tradeAreaId) {
+      this.options.view.initTradeArea();
+    }
   }
 
   closeInfoWindow() {
