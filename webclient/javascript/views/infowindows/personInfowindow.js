@@ -1,3 +1,5 @@
+import {getServer} from '../../server';
+
 class PersonInfoWindow {
   constructor(person) {
     this.person = person;
@@ -31,6 +33,8 @@ class PersonInfoWindow {
   onButtonClick() {
     const tradeArea = document.getElementById(this.tradeAreaId);
     console.log('making trade: ', tradeArea.value);
+    const tradeDetails = JSON.parse(tradeArea.value);
+    getServer().trade(tradeDetails.to, tradeDetails.items);
   }
 
   initTradeArea() {

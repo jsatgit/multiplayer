@@ -37,6 +37,9 @@ def create_house(person):
 def get_person(sid):
     return Game.sid_to_person.get(sid)
 
+def get_person_by_id(pid):
+    return Game.people[pid]
+
 def pack_people():
     return [person.pack() for person in Game.people if person.active]
 

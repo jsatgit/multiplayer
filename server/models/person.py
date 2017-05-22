@@ -32,14 +32,25 @@ class Person:
             lng=step.get('lng')
         )
 
-    def canTakeResource(self, resource):
+    def can_take_resource(self, resource):
         return close(self.position, resource.get('position'))
 
-    def addToInventory(self, items):
+    def add_to_inventory(self, items):
         for name, value in items.iteritems():
             self.inventory[name] += value
 
+    def can_remove_from_inventory(self, items):
+        for name, value in items.iteritems():
+            if (
+                name not in self.inventory or 
+                self.inventory[name] - value < 0
+            ):
+                return False
+        return True
 
+    def remove_from_inventory(self, items):
+        for name, value in items.iteritems():
+            self.inventory[name] -= value 
 
 
 def make_step(position, lat=0, lng=0):

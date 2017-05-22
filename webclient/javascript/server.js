@@ -58,6 +58,11 @@ export const LEFT = 'left';
  */
 export const RESOURCE = 'resource';
 
+/**
+ * event for trading
+ */
+export const TRADE = 'trade';
+
 let server = null;
 
 /**
@@ -142,6 +147,18 @@ class Server {
       action: 'take',
       resource_name: resourceName,
       resource_id: id
+    });
+  }
+
+  /**
+   * Trades a resource
+   * @param {number} id - id of the person to trade with 
+   * @param {Object} items - mapping of object names to quantities
+   */
+  trade(to, items) {
+    getServer().emit(TRADE, {
+      to: to,
+      items: items
     });
   }
 }

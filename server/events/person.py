@@ -1,10 +1,12 @@
 from app import socketio
 from flask import request
 from game import get_person
+from game import get_person_by_id
 from emitter import send_to_everyone
 
 UPDATE_POSITON = 'update_position'
 MOVE = 'move'
+TRADE = 'trade'
 
 @socketio.on(MOVE)
 def on_move(options):
@@ -17,3 +19,14 @@ def on_move(options):
         'id': person.id,
         'position': person.position
     })
+
+@socketio.on(TRADE)
+def on_trade(options):
+    seller = get_person(request.sid)
+    buyer = get_person_by_id(options.get('to'))
+    items = options.get('items')
+    if seller.can_remove_from_inventory(items):
+        seller.remove_from_inventory(items)
+        buyer.add_to_inventory(items)
+    # send reply
+    
