@@ -44,6 +44,15 @@ class Person extends Model {
     this.notify(Person.UPDATE_INVENTORY);
   }
 
+  removeFromInventory(items) {
+    for (const name in items) {
+      if (this.inventory[name] && this.inventory[name] - items[name] >= 0) {
+        this.inventory[name] -= items[name];
+      } 
+    }
+    this.notify(Person.UPDATE_INVENTORY);
+  }
+
   static stepTowards(initialPosition, finalPosition) {
     const latDiff = finalPosition.lat - initialPosition.lat;
     const lngDiff = finalPosition.lng - initialPosition.lng;

@@ -4,7 +4,8 @@ import {
   getServer,
   UPDATE_POSITION,
   ADD_PERSON as SERVER_ADD_PERSON,
-  RESOURCE
+  RESOURCE,
+  TRADE
 } from '../server';
 
 let people = null;
@@ -44,6 +45,14 @@ class People extends Model {
         const { person_id, resource_name, inventory_gain } = response;
         const person = this._people[person_id];
         person.addToInventory({[resource_name]: inventory_gain});
+      },
+      [TRADE]: response => {
+        console.log('received response');
+        const { from, to, items } = response;
+        const seller = this._people[from];
+        seller.removeFromInventory(items);
+        const buyer = this._people[to];
+        buyer.addToInventory(items);
       }
     });
   }

@@ -28,5 +28,9 @@ def on_trade(options):
     if seller.can_remove_from_inventory(items):
         seller.remove_from_inventory(items)
         buyer.add_to_inventory(items)
-    # send reply
+        send_to_everyone(TRADE, {
+            'from': seller.id,
+            'to': buyer.id,
+            'items': items
+        })
     
