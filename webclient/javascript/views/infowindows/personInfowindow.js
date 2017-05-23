@@ -1,5 +1,6 @@
 import {getServer} from '../../server';
 import GameModel from '../../models/gameModel';
+import verifyTrade from '../../trade';
 
 class PersonInfoWindow {
   constructor(person) {
@@ -44,11 +45,16 @@ class PersonInfoWindow {
 
   initTradeButton() {
     const button = document.getElementById(this.tradeButtonId);
-    button.addEventListener('click', evt => {
-      const tradeArea = document.getElementById(this.tradeAreaId);
+    button.addEventListener('click', this.onTradeSubmission.bind(this));
+  }
+
+  onTradeSubmission(evt) {
+    const tradeArea = document.getElementById(this.tradeAreaId);
+    const tradeString = tradeArea.value;
+    if (verifyTrade(tradeString)) {
       const tradeDetails = JSON.parse(tradeArea.value);
       getServer().trade(tradeDetails.to, tradeDetails.items);
-    });
+    }
   }
 
   initTradeArea() {
@@ -68,7 +74,7 @@ class PersonInfoWindow {
         <textarea id=\'${this.tradeAreaId}\' class="trade-area" rows="8" cols="30"></textarea>
         <div>
           <button id=\'${this.tradeButtonId}\'>
-            Trade
+            Submit Trade
           </button>
         </div>
       </div>
