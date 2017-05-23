@@ -24,6 +24,9 @@ def on_move(options):
 def on_trade(options):
     seller = get_person(request.sid)
     buyer = get_person_by_id(options.get('to'))
+    if not buyer.active:
+        return 
+
     items = options.get('items')
     if seller.can_remove_from_inventory(items):
         seller.remove_from_inventory(items)
