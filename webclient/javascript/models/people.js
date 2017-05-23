@@ -47,7 +47,6 @@ class People extends Model {
         person.addToInventory({[resource_name]: inventory_gain});
       },
       [TRADE]: response => {
-        console.log('received response');
         const { from, to, items } = response;
         const seller = this._people[from];
         seller.removeFromInventory(items);

@@ -15,8 +15,13 @@ class PersonInfoWindow {
   }
 
   renderInventory() {
-    let renderedInventory = '<div>Inventory</div>';
+    let renderedInventory = "<div class='inventory-title'>Inventory:</div>";
     const inventory = this.person.inventory;
+    if (isEmpty(inventory)) {
+      renderedInventory += '<div>Your inventory is empty</div>';
+      return renderedInventory;
+    }
+
     for (const itemName in inventory) {
       renderedInventory += this.renderInventoryItem(
         itemName, inventory[itemName]
@@ -38,7 +43,6 @@ class PersonInfoWindow {
   }
 
   initTradeButton() {
-    console.log(this.tradeButtonId);
     const button = document.getElementById(this.tradeButtonId);
     button.addEventListener('click', evt => {
       const tradeArea = document.getElementById(this.tradeAreaId);
@@ -74,7 +78,7 @@ class PersonInfoWindow {
   render() {
     return `
       <div>
-        <div>${this.person.name}</div>
+        <div>Name: ${this.person.name} (${this.person.id})</div>
         ${this.renderTradeContainer()}
         <div id=\'${this.inventoryId}\'>${this.renderInventory()}</div>
       </div>
@@ -84,6 +88,10 @@ class PersonInfoWindow {
 
 function generateId(type, person) {
   return `${type}-${person.id}`;
+}
+
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0 && obj.constructor === Object;
 }
 
 

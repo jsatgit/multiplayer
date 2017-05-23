@@ -16,3 +16,7 @@ html, body {
 .trade-area {
   resize: none;
 }
+
+.inventory-title {
+  text-align: center;
+}

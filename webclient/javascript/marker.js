@@ -3,8 +3,10 @@ class Marker {
     this.options = options;
     this.marker = null;
     this.map = null;
+
     this.infoWindow = null;
-    this.infoWindowStayOpen = false;
+    this.isInfoWindowOpen = false;
+    this.isInfoWindowSticky = false;
 
     this.openInfoWindow = this.openInfoWindow.bind(this);
     this.closeInfoWindow = this.closeInfoWindow.bind(this);
@@ -49,29 +51,33 @@ class Marker {
   }
 
   openInfoWindow() {
+    if (this.isInfoWindowOpen) {
+      return;
+    }
+
+    this.isInfoWindowOpen = true;
     this.infoWindow.setContent(this.options.view.render());
     this.infoWindow.open(this.map, this.marker);
 
     if (this.options.view.onRendered) {
-      //this.options.view.onRendered.call(this.options.view);
       this.options.view.onRendered();
     }
   }
 
   closeInfoWindow() {
-    if (!this.infoWindowStayOpen) {
-      this.infoWindow.close();
+    if (!this.isInfoWindowOpen 
+        || (this.isInfoWindowOpen && this.isInfoWindowSticky)
+    )  {
+      return;
     }
+
+    this.isInfoWindowOpen = false;
+    this.infoWindow.close();
   }
 
   toggleInfoWindow() {
-    if (this.infoWindowStayOpen) {
-      this.infoWindowStayOpen = false;
-      this.closeInfoWindow();
-    } else {
-      this.infoWindowStayOpen = true;
-      this.openInfoWindow();
-    }
+    this.isInfoWindowSticky = !this.isInfoWindowSticky;
+    this.isInfoWindowOpen ? this.closeInfoWindow() : this.openInfoWindow();
   }
 }
 
