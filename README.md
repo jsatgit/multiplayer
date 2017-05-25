@@ -20,9 +20,21 @@
 
 1. From project root, `cd server`
 
-2. Make sure virtualenv is activated
+2. Create a config file named `config.py`
 
-3. Run `make`
+Place your Google Maps API key here and spawn location here:
+
+```
+GOOGLE_MAPS_API_KEY = 'your-api-key-here'
+SPAWN = {
+    'lat': 37.7749,
+    'lng': -122.4194
+}
+```
+
+3. Make sure virtualenv is activated
+
+4. Run `make`
 
 ## Client
 
