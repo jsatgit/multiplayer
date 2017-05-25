@@ -1,19 +1,16 @@
 from random import uniform
 from collections import defaultdict
-
-COQUITLAM = {
-    'lat': 49.2838,
-    'lng': -122.7932
-}
+from app import flask_app
 
 def getRandPosition():
     lat_radius = 0.002
     lng_radius = 0.003
     diff_lat = uniform(-lat_radius, lat_radius)
     diff_lng = uniform(-lng_radius, lng_radius)
+    spawn = flask_app.config.get('SPAWN')
     return {
-        'lat': COQUITLAM.get('lat') + diff_lat,
-        'lng': COQUITLAM.get('lng') + diff_lng
+        'lat': spawn.get('lat') + diff_lat,
+        'lng': spawn.get('lng') + diff_lng
     }
 
 def create(num, ResourceClass):

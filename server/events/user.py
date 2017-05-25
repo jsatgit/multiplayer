@@ -1,4 +1,4 @@
-from app import socketio
+from bootstrap import socketio
 from flask import request
 from app import flask_app
 from emitter import send_to_everyone_else

@@ -1,4 +1,4 @@
-from app import socketio
+from bootstrap import socketio
 from app import flask_app
 
 if __name__ == '__main__':

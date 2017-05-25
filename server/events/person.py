@@ -1,4 +1,4 @@
-from app import socketio
+from bootstrap import socketio
 from flask import request
 from game import get_person
 from game import get_person_by_id

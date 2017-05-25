@@ -1,5 +1,6 @@
 from models.person import Person
 from models.house import House
+from app import flask_app
 
 import models.resources as resources
 
@@ -17,7 +18,7 @@ def create_person(name, sid):
     person = Person(
         person_id=Game.person_id,
         name=name,
-        position=resources.COQUITLAM
+        position=flask_app.config.get('SPAWN')
     )
     Game.person_id += 1
     Game.people.append(person)
