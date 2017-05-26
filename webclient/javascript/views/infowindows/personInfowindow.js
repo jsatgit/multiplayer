@@ -24,9 +24,11 @@ class PersonInfoWindow {
     }
 
     for (const itemName in inventory) {
-      renderedInventory += this.renderInventoryItem(
-        itemName, inventory[itemName]
-      );
+      if (inventory[itemName] > 0) {
+        renderedInventory += this.renderInventoryItem(
+          itemName, inventory[itemName]
+        );
+      }
     }
     return renderedInventory;
   }

@@ -35,11 +35,10 @@ class Person extends Model {
 
   addToInventory(items) {
     for (const name in items) {
-      if (this.inventory[name]) {
-        this.inventory[name] += items[name];
-      } else {
-        this.inventory[name] = 1;
+      if (!this.inventory[name]) {
+        this.inventory[name] = 0;
       }
+      this.inventory[name] += items[name];
     }
     this.notify(Person.UPDATE_INVENTORY);
   }
